@@ -1,0 +1,19 @@
+# Node.js
+node_modules/
+.env
+.env.local
+
+# Prisma
+prisma/dev.db
+prisma/migrations/
+
+# Logs
+logs
+*.log
+
+# OS files
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
