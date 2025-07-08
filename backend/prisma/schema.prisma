@@ -1,0 +1,160 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Rol {
+  club
+  demandante
+}
+
+enum EstadoSolicitud {
+  pendiente
+  aceptada
+  rechazada
+  finalizada
+}
+
+enum EstadoOferta {
+  activa
+  cerrada
+  vencida
+}
+
+model Usuario {
+  id              Int           @id @default(autoincrement())
+  email           String        @unique
+  password        String
+  nombre          String
+  apellidos       String
+  telefono        String
+  fechaRegistro   DateTime      @default(now())
+  rol             Rol
+  club            Club?
+  demandante      Demandante?
+  notificaciones  Notificacion[]
+  mensajesEnviados   Mensaje[] @relation("Emisor")
+  mensajesRecibidos  Mensaje[] @relation("Receptor")
+}
+
+model Club {
+  id              Int        @id @default(autoincrement())
+  usuarioId       Int        @unique
+  nombreClub      String
+  direccion       String
+  ciudad          String
+  codigoPostal    String
+  provincia       String
+  pais            String
+  descripcion     String
+  sitioWeb        String
+  telefonoContacto String
+  usuario         Usuario    @relation(fields: [usuarioId], references: [id])
+  ofertas         Oferta[]
+  contratos       Contrato[]
+}
+
+model Demandante {
+  id              Int        @id @default(autoincrement())
+  usuarioId       Int        @unique
+  fechaNacimiento DateTime
+  experiencia     String
+  formacion       String
+  nivelIngles     String
+  otrosIdiomas    String
+  disponibilidad  String
+  puedeViajar     Boolean
+  curriculumUrl   String
+  fotoPerfilUrl   String
+  usuario         Usuario    @relation(fields: [usuarioId], references: [id])
+  solicitudes     Solicitud[]
+  contratos       Contrato[]
+}
+
+model Oferta {
+  id                  Int         @id @default(autoincrement())
+  clubId              Int
+  titulo              String
+  descripcion         String
+  fechaPublicacion    DateTime
+  fechaLimite         DateTime
+  tipoDeporte         String
+  tipoContrato        String
+  jornada             String
+  salario             Float
+  ubicacion           String
+  requisitosExperiencia String
+  requisitosFormacion String
+  requisitosIdiomas   String
+  estado              EstadoOferta
+  fechaActualizacion  DateTime
+  fechaCierre         DateTime?
+  club                Club        @relation(fields: [clubId], references: [id])
+  solicitudes         Solicitud[]
+  contratos           Contrato[]
+}
+
+model Solicitud {
+  id                Int             @id @default(autoincrement())
+  ofertaId          Int
+  demandanteId      Int
+  fechaSolicitud    DateTime
+  estado            EstadoSolicitud
+  mensajeSolicitud  String
+  mensajeRespuesta  String?
+  fechaRespuesta    DateTime?
+  fechaFinalizacion DateTime?
+  oferta            Oferta          @relation(fields: [ofertaId], references: [id])
+  demandante        Demandante      @relation(fields: [demandanteId], references: [id])
+  contrato          Contrato?
+}
+
+model Contrato {
+  id              Int        @id @default(autoincrement())
+  solicitudId     Int        @unique
+  ofertaId        Int
+  demandanteId    Int
+  clubId          Int
+  fechaInicio     DateTime
+  fechaFin        DateTime
+  estado          String
+  condiciones     String
+  fechaCreacion   DateTime  @default(now())
+  solicitud       Solicitud @relation(fields: [solicitudId], references: [id])
+  oferta          Oferta    @relation(fields: [ofertaId], references: [id])
+  demandante      Demandante @relation(fields: [demandanteId], references: [id])
+  club            Club      @relation(fields: [clubId], references: [id])
+}
+
+model Mensaje {
+  id          Int      @id @default(autoincrement())
+  emisorId    Int
+  receptorId  Int
+  contenido   String
+  fechaEnvio  DateTime @default(now())
+  leido       Boolean  @default(false)
+  emisor      Usuario  @relation("Emisor", fields: [emisorId], references: [id])
+  receptor    Usuario  @relation("Receptor", fields: [receptorId], references: [id])
+}
+
+model Notificacion {
+  id              Int      @id @default(autoincrement())
+  usuarioId       Int
+  tipo            String
+  contenido       String
+  fechaCreacion   DateTime @default(now())
+  leida           Boolean  @default(false)
+  urlRedireccion  String
+  usuario         Usuario  @relation(fields: [usuarioId], references: [id])
+}
