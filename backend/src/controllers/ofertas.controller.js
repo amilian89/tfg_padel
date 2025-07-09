@@ -29,6 +29,48 @@ const getOfertas = async (req, res) => {
   }
 };
 
+// OBTENER OFERTA POR ID
+const getOfertaPorId = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Buscar la oferta por ID
+    const oferta = await prisma.oferta.findUnique({
+      where: {
+        id: parseInt(id)
+      },
+      include: {
+        club: {
+          select: {
+            nombreClub: true,
+            ciudad: true,
+            provincia: true,
+            direccion: true,
+            telefonoContacto: true,
+            sitioWeb: true
+          }
+        }
+      }
+    });
+
+    // Si no se encuentra la oferta
+    if (!oferta) {
+      return res.status(404).json({
+        error: 'Oferta no encontrada'
+      });
+    }
+
+    // Devolver respuesta exitosa
+    res.status(200).json(oferta);
+
+  } catch (error) {
+    console.error('Error al obtener oferta por ID:', error);
+    res.status(500).json({
+      error: 'Error interno del servidor'
+    });
+  }
+};
+
 // CREAR NUEVA OFERTA
 const crearOferta = async (req, res) => {
   try {
@@ -125,5 +167,6 @@ const crearOferta = async (req, res) => {
 
 module.exports = {
   getOfertas,
+  getOfertaPorId,
   crearOferta
 }; 
