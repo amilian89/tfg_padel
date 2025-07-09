@@ -228,7 +228,90 @@ const listarSolicitudes = async (req, res) => {
   }
 };
 
+// RESPONDER SOLICITUD
+const responderSolicitud = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { estado, mensajeRespuesta } = req.body;
+
+    // Validar campos requeridos
+    if (!estado) {
+      return res.status(400).json({
+        error: 'El campo estado es requerido'
+      });
+    }
+
+    // Validar que el estado sea válido
+    if (estado !== 'aceptada' && estado !== 'rechazada') {
+      return res.status(400).json({
+        error: 'El estado debe ser "aceptada" o "rechazada"'
+      });
+    }
+
+    // Verificar que la solicitud existe
+    const solicitudExistente = await prisma.solicitud.findUnique({
+      where: { id: parseInt(id) }
+    });
+
+    if (!solicitudExistente) {
+      return res.status(404).json({
+        error: 'Solicitud no encontrada'
+      });
+    }
+
+    // Verificar que la solicitud esté pendiente
+    if (solicitudExistente.estado !== 'pendiente') {
+      return res.status(400).json({
+        error: 'La solicitud ya ha sido respondida'
+      });
+    }
+
+    // Actualizar la solicitud
+    const solicitudActualizada = await prisma.solicitud.update({
+      where: { id: parseInt(id) },
+      data: {
+        estado,
+        mensajeRespuesta: mensajeRespuesta || null,
+        fechaRespuesta: new Date()
+      },
+      include: {
+        oferta: {
+          select: {
+            titulo: true,
+            club: {
+              select: {
+                nombreClub: true
+              }
+            }
+          }
+        },
+        demandante: {
+          select: {
+            usuario: {
+              select: {
+                nombre: true,
+                apellidos: true,
+                email: true
+              }
+            }
+          }
+        }
+      }
+    });
+
+    // Devolver respuesta exitosa
+    res.status(200).json(solicitudActualizada);
+
+  } catch (error) {
+    console.error('Error al responder solicitud:', error);
+    res.status(500).json({
+      error: 'Error interno del servidor'
+    });
+  }
+};
+
 module.exports = {
   solicitarOferta,
-  listarSolicitudes
+  listarSolicitudes,
+  responderSolicitud
 }; 
