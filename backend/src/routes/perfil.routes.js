@@ -4,9 +4,9 @@ const { getPerfil, actualizarPerfil } = require('../controllers/perfil.controlle
 const router = express.Router();
 
 // Ruta para obtener perfil de usuario
-router.get('/perfil/:usuarioId', getPerfil);
+router.get('/:usuarioId', getPerfil);
 
 // Ruta para actualizar perfil de usuario
-router.put('/perfil/:usuarioId', actualizarPerfil);
+router.put('/:usuarioId', actualizarPerfil);
 
 module.exports = router; 

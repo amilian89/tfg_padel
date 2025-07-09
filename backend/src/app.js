@@ -15,8 +15,8 @@ app.use(express.json());
 // Rutas
 app.use('/auth', authRoutes);
 app.use('/ofertas', ofertasRoutes);
-app.use('/', solicitudesRoutes);
-app.use('/', perfilRoutes);
+app.use('/solicitudes', solicitudesRoutes);
+app.use('/perfil', perfilRoutes);
 
 // Ruta base
 app.get('/', (req, res) => {
