@@ -3,6 +3,7 @@ const cors = require('cors');
 const authRoutes = require('./routes/auth.routes');
 const ofertasRoutes = require('./routes/ofertas.routes');
 const solicitudesRoutes = require('./routes/solicitudes.routes');
+const perfilRoutes = require('./routes/perfil.routes');
 
 const app = express();
 const PORT = 3000;
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use('/auth', authRoutes);
 app.use('/ofertas', ofertasRoutes);
 app.use('/', solicitudesRoutes);
+app.use('/', perfilRoutes);
 
 // Ruta base
 app.get('/', (req, res) => {
