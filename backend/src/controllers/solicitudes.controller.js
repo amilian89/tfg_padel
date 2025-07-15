@@ -4,12 +4,15 @@ const prisma = require('../prisma/client');
 const solicitarOferta = async (req, res) => {
   try {
     const { id: ofertaId } = req.params;
-    const { demandanteId, mensajeSolicitud } = req.body;
+    const { mensajeSolicitud } = req.body;
+
+    // Obtener el usuario autenticado del token JWT
+    const usuarioId = req.usuario.id;
 
     // Validar campos requeridos
-    if (!demandanteId || !mensajeSolicitud) {
+    if (!mensajeSolicitud) {
       return res.status(400).json({
-        error: 'Faltan campos requeridos: demandanteId, mensajeSolicitud'
+        error: 'Falta campo requerido: mensajeSolicitud'
       });
     }
 
@@ -24,14 +27,14 @@ const solicitarOferta = async (req, res) => {
       });
     }
 
-    // Verificar que el demandante existe
+    // Buscar el demandante del usuario autenticado
     const demandante = await prisma.demandante.findUnique({
-      where: { id: parseInt(demandanteId) }
+      where: { usuarioId: usuarioId }
     });
 
     if (!demandante) {
-      return res.status(404).json({
-        error: 'Demandante no encontrado'
+      return res.status(400).json({
+        error: 'El usuario no tiene un perfil de demandante'
       });
     }
 
@@ -39,7 +42,7 @@ const solicitarOferta = async (req, res) => {
     const solicitudExistente = await prisma.solicitud.findFirst({
       where: {
         ofertaId: parseInt(ofertaId),
-        demandanteId: parseInt(demandanteId)
+        demandanteId: demandante.id
       }
     });
 
@@ -53,7 +56,7 @@ const solicitarOferta = async (req, res) => {
     const nuevaSolicitud = await prisma.solicitud.create({
       data: {
         ofertaId: parseInt(ofertaId),
-        demandanteId: parseInt(demandanteId),
+        demandanteId: demandante.id,
         fechaSolicitud: new Date(),
         estado: 'pendiente',
         mensajeSolicitud,
@@ -100,12 +103,15 @@ const solicitarOferta = async (req, res) => {
 // LISTAR SOLICITUDES
 const listarSolicitudes = async (req, res) => {
   try {
-    const { usuarioId, rol } = req.query;
+    const { rol } = req.query;
+
+    // Obtener el usuario autenticado del token JWT
+    const usuarioId = req.usuario.id;
 
     // Validar parámetros requeridos
-    if (!usuarioId || !rol) {
+    if (!rol) {
       return res.status(400).json({
-        error: 'Faltan parámetros requeridos: usuarioId, rol'
+        error: 'Falta parámetro requerido: rol'
       });
     }
 
@@ -116,12 +122,19 @@ const listarSolicitudes = async (req, res) => {
       });
     }
 
+    // Verificar que el rol del usuario autenticado coincida con el solicitado
+    if (req.usuario.rol !== rol) {
+      return res.status(403).json({
+        error: 'No tienes permisos para ver solicitudes de este rol'
+      });
+    }
+
     let solicitudes = [];
 
     if (rol === 'demandante') {
       // Buscar el demandante del usuario
       const demandante = await prisma.demandante.findUnique({
-        where: { usuarioId: parseInt(usuarioId) }
+        where: { usuarioId: usuarioId }
       });
 
       if (!demandante) {
@@ -159,7 +172,7 @@ const listarSolicitudes = async (req, res) => {
     } else if (rol === 'club') {
       // Buscar el club del usuario
       const club = await prisma.club.findUnique({
-        where: { usuarioId: parseInt(usuarioId) }
+        where: { usuarioId: usuarioId }
       });
 
       if (!club) {

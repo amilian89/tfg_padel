@@ -78,6 +78,16 @@ const actualizarPerfil = async (req, res) => {
     const { usuarioId } = req.params;
     const datosActualizados = req.body;
 
+    // Obtener el usuario autenticado del token JWT
+    const usuarioAutenticadoId = req.usuario.id;
+
+    // Verificar que el usuario solo puede actualizar su propio perfil
+    if (parseInt(usuarioId) !== usuarioAutenticadoId) {
+      return res.status(403).json({
+        error: 'Solo puedes actualizar tu propio perfil'
+      });
+    }
+
     // Verificar que el usuario existe
     const usuarioExistente = await prisma.usuario.findUnique({
       where: { id: parseInt(usuarioId) },

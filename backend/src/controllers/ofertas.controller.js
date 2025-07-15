@@ -88,10 +88,8 @@ const crearOferta = async (req, res) => {
       fechaLimite
     } = req.body;
 
-    // TODO: Obtener usuario autenticado del token JWT
-    // Por ahora, usaremos un clubId temporal para pruebas
-    // En producción, esto vendría del middleware de autenticación
-    const clubId = req.body.clubId; // Temporal - después vendrá del token
+    // Obtener el usuario autenticado del token JWT
+    const usuarioId = req.usuario.id;
 
     // Validar campos requeridos
     if (!titulo || !descripcion || !tipoDeporte || !salario) {
@@ -100,33 +98,21 @@ const crearOferta = async (req, res) => {
       });
     }
 
-    // Si no se proporciona clubId (en modo temporal), usar el primero disponible
-    let clubIdFinal = clubId;
-    if (!clubIdFinal) {
-      const primerClub = await prisma.club.findFirst();
-      if (!primerClub) {
-        return res.status(400).json({
-          error: 'No hay clubs disponibles. Primero registra un usuario como club.'
-        });
-      }
-      clubIdFinal = primerClub.id;
-    } else {
-      // Verificar que el club existe
-      const clubExistente = await prisma.club.findUnique({
-        where: { id: parseInt(clubIdFinal) }
-      });
+    // Buscar el club del usuario autenticado
+    const club = await prisma.club.findUnique({
+      where: { usuarioId: usuarioId }
+    });
 
-      if (!clubExistente) {
-        return res.status(400).json({
-          error: 'El club especificado no existe'
-        });
-      }
+    if (!club) {
+      return res.status(400).json({
+        error: 'El usuario no tiene un perfil de club'
+      });
     }
 
     // Crear la nueva oferta
     const nuevaOferta = await prisma.oferta.create({
       data: {
-        clubId: parseInt(clubIdFinal),
+        clubId: club.id,
         titulo,
         descripcion,
         fechaPublicacion: new Date(),
