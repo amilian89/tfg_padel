@@ -1,10 +1,17 @@
-import React from 'react';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
 
 function App() {
   return (
-    <div>
-      <h1>Bienvenido a TFG Padel</h1>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<h1>Bienvenido a TFG Pádel</h1>} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </Router>
   );
 }
 

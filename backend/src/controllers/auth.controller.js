@@ -6,34 +6,21 @@ const prisma = require('../prisma/client');
 // REGISTRO DE USUARIO
 const register = async (req, res) => {
   try {
-    const { 
-      email, 
-      password, 
-      nombre, 
-      apellidos, 
-      telefono, 
-      rol,
-      // Campos adicionales para Club
-      nombreClub,
-      direccion,
-      ciudad,
-      codigoPostal,
-      provincia,
-      pais,
-      descripcion,
-      sitioWeb,
-      telefonoContacto,
-      // Campos adicionales para Demandante
-      fechaNacimiento,
-      experiencia,
-      formacion,
-      nivelIngles,
-      otrosIdiomas,
-      disponibilidad,
-      puedeViajar,
-      curriculumUrl,
-      fotoPerfilUrl
-    } = req.body;
+    // Extraer datos anidados
+    const { usuario = {}, club = {}, demandante = {} } = req.body;
+    const {
+      email,
+      password,
+      nombre,
+      apellidos,
+      telefono,
+      rol
+    } = usuario;
+
+    // Validación de campos obligatorios comunes
+    if (!email || !password || !nombre || !apellidos || !telefono || !rol) {
+      return res.status(400).json({ error: 'Faltan campos obligatorios' });
+    }
 
     // Verificar si el email ya existe
     const usuarioExistente = await prisma.usuario.findUnique({
@@ -67,7 +54,7 @@ const register = async (req, res) => {
       // Crear perfil según el rol
       if (rol === 'club') {
         // Validar campos requeridos para Club
-        if (!nombreClub || !direccion || !ciudad) {
+        if (!club.nombreClub || !club.direccion || !club.ciudad) {
           throw new Error('Para registrarse como club, se requieren: nombreClub, direccion, ciudad');
         }
 
@@ -75,20 +62,20 @@ const register = async (req, res) => {
         await prisma.club.create({
           data: {
             usuarioId: nuevoUsuario.id,
-            nombreClub,
-            direccion,
-            ciudad,
-            codigoPostal: codigoPostal || '',
-            provincia: provincia || '',
-            pais: pais || 'España',
-            descripcion: descripcion || '',
-            sitioWeb: sitioWeb || '',
-            telefonoContacto: telefonoContacto || telefono
+            nombreClub: club.nombreClub,
+            direccion: club.direccion,
+            ciudad: club.ciudad,
+            codigoPostal: club.codigoPostal || '',
+            provincia: club.provincia || '',
+            pais: club.pais || 'España',
+            descripcion: club.descripcion || '',
+            sitioWeb: club.sitioWeb || '',
+            telefonoContacto: club.telefonoContacto || telefono
           }
         });
       } else if (rol === 'demandante') {
         // Validar campos requeridos para Demandante
-        if (!fechaNacimiento) {
+        if (!demandante.fechaNacimiento) {
           throw new Error('Para registrarse como demandante, se requiere: fechaNacimiento');
         }
 
@@ -96,15 +83,15 @@ const register = async (req, res) => {
         await prisma.demandante.create({
           data: {
             usuarioId: nuevoUsuario.id,
-            fechaNacimiento: new Date(fechaNacimiento),
-            experiencia: experiencia || '',
-            formacion: formacion || '',
-            nivelIngles: nivelIngles || '',
-            otrosIdiomas: otrosIdiomas || '',
-            disponibilidad: disponibilidad || '',
-            puedeViajar: puedeViajar || false,
-            curriculumUrl: curriculumUrl || '',
-            fotoPerfilUrl: fotoPerfilUrl || ''
+            fechaNacimiento: new Date(demandante.fechaNacimiento),
+            experiencia: demandante.experiencia || '',
+            formacion: demandante.formacion || '',
+            nivelIngles: demandante.nivelIngles || '',
+            otrosIdiomas: demandante.otrosIdiomas || '',
+            disponibilidad: demandante.disponibilidad || '',
+            puedeViajar: demandante.puedeViajar || false,
+            curriculumUrl: demandante.curriculumUrl || '',
+            fotoPerfilUrl: demandante.fotoPerfilUrl || ''
           }
         });
       }
@@ -122,7 +109,7 @@ const register = async (req, res) => {
 
   } catch (error) {
     console.error('Error en registro:', error);
-    
+
     // Manejar errores específicos de validación
     if (error.message.includes('se requieren') || error.message.includes('se requiere')) {
       return res.status(400).json({
