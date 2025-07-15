@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import "./Header.css";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -14,21 +15,47 @@ const Header = () => {
   };
 
   return (
-    <header style={{ padding: "10px", borderBottom: "1px solid #ccc", marginBottom: "20px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-      <div style={{ cursor: "pointer", fontWeight: "bold", fontSize: "20px" }} onClick={() => navigate("/")}>TFG Pádel</div>
-      <nav>
-        {!isLogged ? (
-          <>
-            <button onClick={() => navigate("/login")}>Iniciar sesión</button>
-            <button onClick={() => navigate("/register")}>Registrarse</button>
-          </>
-        ) : (
-          <>
-            <button onClick={() => navigate("/perfil")}>Mi perfil</button>
-            <button onClick={handleLogout}>Cerrar sesión</button>
-          </>
-        )}
-      </nav>
+    <header className="header">
+      <div className="container">
+        <div className="header-content">
+          <div className="logo" onClick={() => navigate("/")}>
+            <span className="logo-text">ProPista</span>
+          </div>
+          <nav className="nav">
+            {!isLogged ? (
+              <div className="nav-buttons">
+                <button 
+                  className="btn btn-outline" 
+                  onClick={() => navigate("/login")}
+                >
+                  Iniciar sesión
+                </button>
+                <button 
+                  className="btn btn-primary" 
+                  onClick={() => navigate("/register")}
+                >
+                  Registrarse
+                </button>
+              </div>
+            ) : (
+              <div className="nav-buttons">
+                <button 
+                  className="btn btn-outline" 
+                  onClick={() => navigate("/perfil")}
+                >
+                  Mi perfil
+                </button>
+                <button 
+                  className="btn btn-secondary" 
+                  onClick={handleLogout}
+                >
+                  Cerrar sesión
+                </button>
+              </div>
+            )}
+          </nav>
+        </div>
+      </div>
     </header>
   );
 };
