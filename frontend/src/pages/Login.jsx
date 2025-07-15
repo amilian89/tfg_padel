@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../services/auth";
+import Header from "../components/Header";
+import "./Login.css";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -39,29 +41,69 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h2>Iniciar sesión</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+    <div className="login-page">
+      <Header />
+      <div className="login-container">
+        <div className="form-wrapper">
+          <div className="form-header">
+            <h1 className="form-title">Iniciar sesión</h1>
+            <p className="form-subtitle">
+              Accede a tu cuenta de ProPista
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="login-form">
+            <div className="form-group">
+              <label className="form-label">Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="form-input"
+                placeholder="tu@email.com"
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Contraseña</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="form-input"
+                placeholder="Tu contraseña"
+                required
+              />
+            </div>
+
+            {/* Mensajes de estado */}
+            {mensaje && <div className="success-message">{mensaje}</div>}
+            {error && <div className="error-message">{error}</div>}
+
+            {/* Botón de envío */}
+            <div className="form-actions">
+              <button type="submit" className="btn btn-primary submit-btn">
+                Iniciar sesión
+              </button>
+            </div>
+
+            {/* Enlaces adicionales */}
+            <div className="form-footer">
+              <p className="form-footer-text">
+                ¿No tienes cuenta?{" "}
+                <button 
+                  type="button" 
+                  className="link-button"
+                  onClick={() => navigate("/register")}
+                >
+                  Regístrate aquí
+                </button>
+              </p>
+            </div>
+          </form>
         </div>
-        <div>
-          <label>Contraseña:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <button type="submit">Iniciar sesión</button>
-      </form>
-      {mensaje && <p style={{ color: "green" }}>{mensaje}</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      </div>
     </div>
   );
 };

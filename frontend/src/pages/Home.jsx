@@ -92,11 +92,11 @@ const Home = () => {
             <div className="role-card">
               <h3>Para Clubes</h3>
               <ul className="benefits-list">
-                <li>✓ Publica ofertas de trabajo fácilmente</li>
-                <li>✓ Recibe candidatos cualificados</li>
-                <li>✓ Filtra por experiencia y ubicación</li>
-                <li>✓ Gestiona entrevistas y contrataciones</li>
-                <li>✓ Acceso a base de datos de entrenadores</li>
+                <li>Publica ofertas de trabajo fácilmente</li>
+                <li>Recibe candidatos cualificados</li>
+                <li>Filtra por experiencia y ubicación</li>
+                <li>Gestiona entrevistas y contrataciones</li>
+                <li>Acceso a base de datos de entrenadores</li>
               </ul>
               <button 
                 className="btn btn-primary"
@@ -108,11 +108,11 @@ const Home = () => {
             <div className="role-card">
               <h3>Para Entrenadores</h3>
               <ul className="benefits-list">
-                <li>✓ Encuentra ofertas de trabajo</li>
-                <li>✓ Crea tu perfil profesional</li>
-                <li>✓ Recibe notificaciones de nuevas ofertas</li>
-                <li>✓ Conecta directamente con clubes</li>
-                <li>✓ Gestiona tu carrera deportiva</li>
+                <li>Encuentra ofertas de trabajo</li>
+                <li>Crea tu perfil profesional</li>
+                <li>Recibe notificaciones de nuevas ofertas</li>
+                <li>Conecta directamente con clubes</li>
+                <li>Gestiona tu carrera deportiva</li>
               </ul>
               <button 
                 className="btn btn-primary"
