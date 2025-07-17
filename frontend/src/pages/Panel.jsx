@@ -131,10 +131,10 @@ const Panel = () => {
                     <span className="info-value">{oferta.club?.nombreClub || 'No especificado'}</span>
                   </div>
                   
-                  {oferta.salario && (
+                  {oferta.tipoDeporte && (
                     <div className="info-item">
-                      <span className="info-label">Salario:</span>
-                      <span className="info-value">{oferta.salario}€</span>
+                      <span className="info-label">Deporte:</span>
+                      <span className="info-value">{oferta.tipoDeporte}</span>
                     </div>
                   )}
                   

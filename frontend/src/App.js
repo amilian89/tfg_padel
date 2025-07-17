@@ -8,6 +8,7 @@ import Panel from "./pages/Panel";
 import OfertaDetalle from "./pages/OfertaDetalle";
 import PublicarOferta from "./pages/PublicarOferta";
 import SolicitudesRecibidas from "./pages/SolicitudesRecibidas";
+import MisSolicitudes from "./pages/MisSolicitudes";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/oferta/:id" element={<OfertaDetalle />} />
         <Route path="/publicar" element={<PublicarOferta />} />
         <Route path="/solicitudes" element={<SolicitudesRecibidas />} />
+        <Route path="/mis-solicitudes" element={<MisSolicitudes />} />
       </Routes>
     </Router>
   );

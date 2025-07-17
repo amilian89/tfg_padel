@@ -54,6 +54,14 @@ const Header = () => {
                     Solicitudes
                   </button>
                 )}
+                {userRole === "demandante" && (
+                  <button 
+                    className="btn btn-outline" 
+                    onClick={() => navigate("/mis-solicitudes")}
+                  >
+                    Mis Solicitudes
+                  </button>
+                )}
                 <button 
                   className="btn btn-outline" 
                   onClick={() => navigate("/perfil")}
