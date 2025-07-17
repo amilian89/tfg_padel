@@ -10,6 +10,7 @@ const SolicitudesRecibidas = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [procesandoSolicitudes, setProcesandoSolicitudes] = useState(new Set());
 
   useEffect(() => {
     // Verificar autenticación y rol
@@ -92,9 +93,9 @@ const SolicitudesRecibidas = () => {
 
   const getEstadoBadge = (estado) => {
     const estados = {
-      'pendiente': { texto: 'Pendiente', clase: 'estado-pendiente' },
-      'aceptada': { texto: 'Aceptada', clase: 'estado-aceptada' },
-      'rechazada': { texto: 'Rechazada', clase: 'estado-rechazada' }
+      'pendiente': { texto: 'Pendiente ⏳', clase: 'estado-pendiente' },
+      'aceptada': { texto: 'Aceptada ✅', clase: 'estado-aceptada' },
+      'rechazada': { texto: 'Rechazada ❌', clase: 'estado-rechazada' }
     };
 
     const estadoInfo = estados[estado] || { texto: estado, clase: 'estado-desconocido' };
@@ -107,9 +108,69 @@ const SolicitudesRecibidas = () => {
   };
 
   const handleResponderSolicitud = async (solicitudId, estado) => {
-    // TODO: Implementar la funcionalidad de responder solicitud
-    console.log(`Responder solicitud ${solicitudId} con estado: ${estado}`);
-    alert(`Funcionalidad de ${estado} solicitud en desarrollo`);
+    try {
+      // Agregar la solicitud al conjunto de solicitudes en proceso
+      setProcesandoSolicitudes(prev => new Set(prev).add(solicitudId));
+
+      const token = localStorage.getItem("token");
+      
+      // Hacer la petición PUT al backend
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_URL}/solicitudes/${solicitudId}/responder`,
+        {
+          estado: estado
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      // Actualizar el estado local con la solicitud actualizada
+      setSolicitudes(prevSolicitudes => 
+        prevSolicitudes.map(solicitud => 
+          solicitud.id === solicitudId 
+            ? { ...solicitud, ...response.data }
+            : solicitud
+        )
+      );
+
+      // Mostrar mensaje de éxito
+      const mensaje = estado === 'aceptada' 
+        ? 'Solicitud aceptada exitosamente' 
+        : 'Solicitud rechazada exitosamente';
+      
+      // Opcional: mostrar una notificación temporal
+      console.log(mensaje);
+
+    } catch (err) {
+      console.error(`Error al ${estado === 'aceptada' ? 'aceptar' : 'rechazar'} solicitud:`, err);
+      
+      let mensajeError = "Error al procesar la solicitud. Por favor, intenta de nuevo.";
+      
+      if (err.response?.status === 404) {
+        mensajeError = "Solicitud no encontrada";
+      } else if (err.response?.status === 400) {
+        mensajeError = err.response.data.error || "Datos inválidos";
+      } else if (err.response?.status === 403) {
+        mensajeError = "No tienes permisos para realizar esta acción";
+      }
+      
+      alert(mensajeError);
+    } finally {
+      // Remover la solicitud del conjunto de solicitudes en proceso
+      setProcesandoSolicitudes(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(solicitudId);
+        return newSet;
+      });
+    }
+  };
+
+  const isProcesando = (solicitudId) => {
+    return procesandoSolicitudes.has(solicitudId);
   };
 
   if (loading) {
@@ -245,15 +306,30 @@ const SolicitudesRecibidas = () => {
                           <button 
                             className="btn btn-success btn-sm"
                             onClick={() => handleResponderSolicitud(solicitud.id, 'aceptada')}
+                            disabled={isProcesando(solicitud.id)}
                           >
-                            ✅ Aceptar
+                            {isProcesando(solicitud.id) ? '⏳ Procesando...' : '✅ Aceptar'}
                           </button>
                           <button 
                             className="btn btn-danger btn-sm"
                             onClick={() => handleResponderSolicitud(solicitud.id, 'rechazada')}
+                            disabled={isProcesando(solicitud.id)}
                           >
-                            ❌ Rechazar
+                            {isProcesando(solicitud.id) ? '⏳ Procesando...' : '❌ Rechazar'}
                           </button>
+                        </div>
+                      )}
+
+                      {solicitud.estado !== 'pendiente' && (
+                        <div className="solicitud-resultado">
+                          <div className="resultado-info">
+                            <strong>Estado final:</strong> {getEstadoBadge(solicitud.estado)}
+                            {solicitud.fechaRespuesta && (
+                              <small className="fecha-respuesta">
+                                📅 Respondida el {formatearFecha(solicitud.fechaRespuesta)}
+                              </small>
+                            )}
+                          </div>
                         </div>
                       )}
 
