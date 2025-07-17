@@ -41,6 +41,12 @@ const Header = () => {
               <div className="nav-buttons">
                 <button 
                   className="btn btn-outline" 
+                  onClick={() => navigate("/panel")}
+                >
+                  Panel
+                </button>
+                <button 
+                  className="btn btn-outline" 
                   onClick={() => navigate("/perfil")}
                 >
                   Mi perfil
