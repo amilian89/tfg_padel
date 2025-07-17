@@ -1,0 +1,381 @@
+/* Oferta Detalle Container */
+.oferta-detalle {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+/* Oferta Header */
+.oferta-header {
+  margin-bottom: 2rem;
+  padding: 1rem 0;
+}
+
+.btn-volver {
+  background-color: transparent;
+  color: #6c757d;
+  border: 1px solid #6c757d;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.btn-volver:hover {
+  background-color: #6c757d;
+  color: white;
+}
+
+/* Oferta Content */
+.oferta-content {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Título de la oferta */
+.oferta-titulo-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.oferta-titulo {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  flex: 1;
+}
+
+.deporte-badge {
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.deporte-badge.padel {
+  background-color: rgba(25, 118, 210, 0.8);
+}
+
+.deporte-badge.tenis {
+  background-color: rgba(123, 31, 162, 0.8);
+}
+
+/* Club Info */
+.club-info {
+  padding: 2rem;
+  border-bottom: 1px solid #e9ecef;
+  background-color: #f8f9fa;
+}
+
+.club-info h3 {
+  color: #2d3748;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.club-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.club-nombre {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0;
+}
+
+.club-ubicacion,
+.club-contacto,
+.club-web {
+  color: #6c757d;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.club-web a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.club-web a:hover {
+  text-decoration: underline;
+}
+
+/* Oferta Sections */
+.oferta-section {
+  padding: 2rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.oferta-section h3 {
+  color: #2d3748;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.oferta-descripcion {
+  color: #4a5568;
+  line-height: 1.6;
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* Oferta Details */
+.oferta-details {
+  padding: 2rem;
+  border-bottom: 1px solid #e9ecef;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: #6c757d;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detail-value {
+  color: #2d3748;
+  font-size: 1rem;
+}
+
+/* Requisitos */
+.requisitos-section {
+  padding: 2rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.requisitos-section h3 {
+  color: #2d3748;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+}
+
+.requisitos-content {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.requisito-item h4 {
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.requisito-item p {
+  color: #4a5568;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Acciones Section */
+.acciones-section {
+  padding: 2rem;
+  background-color: #f8f9fa;
+}
+
+.aplicar-section {
+  text-align: center;
+}
+
+.btn-aplicar {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-aplicar:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+
+/* Formulario de solicitud */
+.formulario-solicitud {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 1rem;
+}
+
+.formulario-solicitud h3 {
+  color: #2d3748;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.mensaje-textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  margin-bottom: 1rem;
+}
+
+.mensaje-textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.formulario-acciones {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #545b62;
+}
+
+/* Ya aplicado */
+.ya-aplicado {
+  text-align: center;
+  padding: 2rem;
+}
+
+.mensaje-ya-aplicado {
+  color: #28a745;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Club acciones */
+.club-acciones {
+  padding: 2rem;
+  background-color: #f8f9fa;
+  text-align: center;
+}
+
+.info-club {
+  color: #6c757d;
+  font-style: italic;
+  margin: 0;
+}
+
+/* Loading y Error */
+.loading-container,
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e9ecef;
+  border-top: 4px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-container h2 {
+  color: #dc3545;
+  margin-bottom: 1rem;
+}
+
+.error-container p {
+  color: #6c757d;
+  margin-bottom: 2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .oferta-titulo-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .oferta-titulo {
+    font-size: 1.5rem;
+  }
+
+  .oferta-details {
+    grid-template-columns: 1fr;
+  }
+
+  .formulario-acciones {
+    flex-direction: column;
+  }
+
+  .club-details {
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .oferta-content {
+    margin: 0 1rem;
+  }
+
+  .oferta-titulo-section,
+  .club-info,
+  .oferta-section,
+  .oferta-details,
+  .requisitos-section,
+  .acciones-section,
+  .club-acciones {
+    padding: 1.5rem;
+  }
+
+  .oferta-titulo {
+    font-size: 1.3rem;
+  }
+} 

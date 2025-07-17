@@ -5,6 +5,8 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Perfil from "./pages/Perfil";
 import Panel from "./pages/Panel";
+import OfertaDetalle from "./pages/OfertaDetalle";
+import PublicarOferta from "./pages/PublicarOferta";
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/perfil" element={<Perfil />} />
         <Route path="/panel" element={<Panel />} />
+        <Route path="/oferta/:id" element={<OfertaDetalle />} />
+        <Route path="/publicar" element={<PublicarOferta />} />
       </Routes>
     </Router>
   );
