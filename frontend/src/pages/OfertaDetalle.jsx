@@ -69,7 +69,7 @@ const OfertaDetalle = () => {
     try {
       setAplicando(true);
       const token = localStorage.getItem("token");
-      await axios.post(`${process.env.REACT_APP_API_URL}/solicitudes/${id}`, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/solicitudes/ofertas/${id}/solicitar`, {
         mensajeSolicitud: mensajeSolicitud.trim()
       }, {
         headers: {

@@ -5,6 +5,7 @@ import "./Header.css";
 const Header = () => {
   const navigate = useNavigate();
   const isLogged = Boolean(window.localStorage.getItem("token"));
+  const userRole = window.localStorage.getItem("rol");
 
   const handleLogout = () => {
     window.localStorage.removeItem("token");
@@ -45,6 +46,14 @@ const Header = () => {
                 >
                   Panel
                 </button>
+                {userRole === "club" && (
+                  <button 
+                    className="btn btn-outline" 
+                    onClick={() => navigate("/solicitudes")}
+                  >
+                    Solicitudes
+                  </button>
+                )}
                 <button 
                   className="btn btn-outline" 
                   onClick={() => navigate("/perfil")}

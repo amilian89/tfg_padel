@@ -7,6 +7,7 @@ import Perfil from "./pages/Perfil";
 import Panel from "./pages/Panel";
 import OfertaDetalle from "./pages/OfertaDetalle";
 import PublicarOferta from "./pages/PublicarOferta";
+import SolicitudesRecibidas from "./pages/SolicitudesRecibidas";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/panel" element={<Panel />} />
         <Route path="/oferta/:id" element={<OfertaDetalle />} />
         <Route path="/publicar" element={<PublicarOferta />} />
+        <Route path="/solicitudes" element={<SolicitudesRecibidas />} />
       </Routes>
     </Router>
   );
