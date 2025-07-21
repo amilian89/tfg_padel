@@ -87,10 +87,20 @@
 }
 
 .oferta-info {
-  display: flex;
-  gap: 1rem;
   margin-bottom: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
   flex-wrap: wrap;
+}
+
+.oferta-info-horizontal {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  margin-bottom: 0.7rem;
+  flex-wrap: nowrap;
+  align-items: center;
 }
 
 .oferta-deporte,
@@ -101,12 +111,19 @@
   border-radius: 20px;
   font-size: 0.9rem;
   font-weight: 500;
+  max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  text-align: center;
 }
 
 .solicitudes-count {
   margin: 0;
   font-size: 0.95rem;
   opacity: 0.9;
+  margin-left: 1.5rem;
 }
 
 /* Solicitudes List */
@@ -387,6 +404,13 @@
 
   .solicitud-card {
     padding: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .oferta-info-horizontal {
+    flex-wrap: wrap;
+    gap: 0.3rem;
   }
 }
 

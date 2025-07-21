@@ -242,7 +242,7 @@ const SolicitudesRecibidas = () => {
               <div key={index} className="oferta-solicitudes">
                 <div className="oferta-header">
                   <h2 className="oferta-titulo">{grupo.oferta.titulo}</h2>
-                  <div className="oferta-info">
+                  <div className="oferta-info-horizontal">
                     <span className="oferta-deporte">{grupo.oferta.tipoDeporte}</span>
                     <span className="oferta-ubicacion">📍 {grupo.oferta.ubicacion}</span>
                     <span className="oferta-salario">💰 {grupo.oferta.salario}€</span>

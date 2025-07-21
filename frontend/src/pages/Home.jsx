@@ -134,7 +134,7 @@ const Home = () => {
               Únete a cientos de clubes y entrenadores que ya confían en ProPista
             </p>
             <button 
-              className="btn btn-outline cta-button"
+              className="btn btn-secondary"
               onClick={() => navigate("/register")}
             >
               Regístrate gratis
