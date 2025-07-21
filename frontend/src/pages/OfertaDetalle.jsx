@@ -215,43 +215,33 @@ const OfertaDetalle = () => {
 
           {/* Detalles de la oferta */}
           <div className="oferta-details">
+            {/* Primera fila */}
             <div className="detail-item">
               <span className="detail-label">Ubicación:</span>
               <span className="detail-value">{oferta.ubicacion || 'No especificada'}</span>
             </div>
-            
-            {oferta.salario && (
-              <div className="detail-item">
-                <span className="detail-label">Salario:</span>
-                <span className="detail-value">{oferta.salario}€</span>
-              </div>
-            )}
-            
-            {oferta.tipoContrato && (
-              <div className="detail-item">
-                <span className="detail-label">Tipo de contrato:</span>
-                <span className="detail-value">{oferta.tipoContrato}</span>
-              </div>
-            )}
-            
-            {oferta.jornada && (
-              <div className="detail-item">
-                <span className="detail-label">Jornada:</span>
-                <span className="detail-value">{oferta.jornada}</span>
-              </div>
-            )}
-            
+            <div className="detail-item">
+              <span className="detail-label">Salario:</span>
+              <span className="detail-value">{oferta.salario ? oferta.salario + '€' : 'No especificado'}</span>
+            </div>
+            <div className="detail-item">
+              <span className="detail-label">Tipo de contrato:</span>
+              <span className="detail-value">{oferta.tipoContrato || 'No especificado'}</span>
+            </div>
+
+            {/* Segunda fila */}
+            <div className="detail-item">
+              <span className="detail-label">Jornada:</span>
+              <span className="detail-value">{oferta.jornada || 'No especificada'}</span>
+            </div>
             <div className="detail-item">
               <span className="detail-label">Fecha de publicación:</span>
               <span className="detail-value">{formatearFecha(oferta.fechaPublicacion)}</span>
             </div>
-            
-            {oferta.fechaLimite && (
-              <div className="detail-item">
-                <span className="detail-label">Fecha límite:</span>
-                <span className="detail-value">{formatearFecha(oferta.fechaLimite)}</span>
-              </div>
-            )}
+            <div className="detail-item">
+              <span className="detail-label">Fecha límite:</span>
+              <span className="detail-value">{oferta.fechaLimite ? formatearFecha(oferta.fechaLimite) : 'No especificada'}</span>
+            </div>
           </div>
 
           {/* Requisitos */}
