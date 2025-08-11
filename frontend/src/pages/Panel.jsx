@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../components/Header";
+import OfferListItem from "../components/OfferListItem";
 import "./Panel.css";
 
 const Panel = () => {
@@ -90,10 +91,6 @@ const Panel = () => {
     }
   };
 
-  const handleVerOferta = (ofertaId) => {
-    navigate(`/oferta/${ofertaId}`);
-  };
-
   const handlePublicarOferta = () => {
     navigate("/publicar");
   };
@@ -151,46 +148,19 @@ const Panel = () => {
 
         {!error && ofertas.length > 0 && (
           <>
-            <div className="ofertas-grid">
+            <div className="ofertas-list">
               {ofertas.map((oferta) => (
-                <div key={oferta.id} className="oferta-card">
-                  <div className="oferta-header">
-                    <h3 className="oferta-titulo">{oferta.titulo || 'Sin título'}</h3>
-                    {oferta.tipoDeporte && (
-                      <span className={`deporte-badge ${oferta.tipoDeporte.toLowerCase()}`}>
-                        {oferta.tipoDeporte}
-                      </span>
-                    )}
-                  </div>
-                  
-                  <div className="oferta-info">
-                    <div className="info-item">
-                      <span className="info-label">Club:</span>
-                      <span className="info-value">{oferta.club?.nombreClub || 'No especificado'}</span>
-                    </div>
-                    {oferta.ubicacion && (
-                      <div className="info-item">
-                        <span className="info-label">Ubicación:</span>
-                        <span className="info-value">{oferta.ubicacion}</span>
-                      </div>
-                    )}
-                    {oferta.salario && (
-                      <div className="info-item">
-                        <span className="info-label">Salario:</span>
-                        <span className="info-value">{oferta.salario}€</span>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="oferta-actions">
-                    <button 
-                      className="btn btn-primary btn-ver-mas"
-                      onClick={() => handleVerOferta(oferta.id)}
-                    >
-                      Ver más
-                    </button>
-                  </div>
-                </div>
+                <OfferListItem
+                  key={oferta.id}
+                  id={oferta.id}
+                  titulo={oferta.titulo || 'Sin título'}
+                  clubNombre={oferta.club?.nombreClub}
+                  ubicacion={oferta.ubicacion}
+                  deporte={oferta.tipoDeporte}
+                  salario={oferta.salario}
+                  fechaPublicacion={oferta.fechaPublicacion}
+                  descripcion={oferta.descripcion}
+                />
               ))}
             </div>
 
