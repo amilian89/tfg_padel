@@ -2,6 +2,7 @@
 :root {
   --color-bg: #f8f9fa;
   --color-text: #2d3748;
+  --color-text-muted: #6c757d;
   --color-primary: #007bff;
   --color-accent: #6c757d;
   --color-success: #28a745;
@@ -14,12 +15,31 @@
   --color-border: #e9ecef;
   --color-shadow: rgba(0, 0, 0, 0.1);
   --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  
+  /* Variables específicas para componentes */
+  --color-card-bg: #ffffff;
+  --color-card-border: #e9ecef;
+  --color-card-shadow: rgba(0, 0, 0, 0.1);
+  --color-btn-bg: #007bff;
+  --color-btn-text: #ffffff;
+  --color-btn-hover-bg: #0056b3;
+  --color-btn-secondary-bg: #6c757d;
+  --color-btn-secondary-hover-bg: #545b62;
+  --color-btn-outline-bg: transparent;
+  --color-btn-outline-text: #007bff;
+  --color-btn-outline-border: #007bff;
+  --color-btn-outline-hover-bg: #007bff;
+  --color-btn-outline-hover-text: #ffffff;
+  --color-header-bg: #ffffff;
+  --color-header-text: #2d3748;
+  --color-background-light: #f8f9fa;
 }
 
-/* Tema para Clubes - Colores fríos (azules) */
+/* Tema para Clubes - Azul fuerte */
 .theme-club {
   --color-bg: #f0f4f8;
   --color-text: #1a365d;
+  --color-text-muted: #475569;
   --color-primary: #2563eb;
   --color-accent: #475569;
   --color-success: #059669;
@@ -31,23 +51,97 @@
   --color-white: #ffffff;
   --color-border: #cbd5e1;
   --color-shadow: rgba(37, 99, 235, 0.1);
-  --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  --gradient-primary: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+  
+  /* Variables específicas para componentes - Club */
+  --color-card-bg: #ffffff;
+  --color-card-border: #cbd5e1;
+  --color-card-shadow: rgba(37, 99, 235, 0.15);
+  --color-btn-bg: #2563eb;
+  --color-btn-text: #ffffff;
+  --color-btn-hover-bg: #1d4ed8;
+  --color-btn-secondary-bg: #475569;
+  --color-btn-secondary-hover-bg: #334155;
+  --color-btn-outline-bg: transparent;
+  --color-btn-outline-text: #2563eb;
+  --color-btn-outline-border: #2563eb;
+  --color-btn-outline-hover-bg: #2563eb;
+  --color-btn-outline-hover-text: #ffffff;
+  --color-header-bg: #ffffff;
+  --color-header-text: #1a365d;
+  --color-background-light: #f1f5f9;
 }
 
-/* Tema para Demandantes - Colores cálidos (verdes/naranjas) */
+/* Tema para Demandantes - Azul claro */
 .theme-demandante {
-  --color-bg: #fef7ed;
-  --color-text: #451a03;
-  --color-primary: #ea580c;
-  --color-accent: #78716c;
-  --color-success: #16a34a;
+  --color-bg: #f0f8ff;
+  --color-text: #1e3a8a;
+  --color-text-muted: #64748b;
+  --color-primary: #4aa3f0;
+  --color-accent: #64748b;
+  --color-success: #059669;
   --color-danger: #dc2626;
-  --color-warning: #ca8a04;
+  --color-warning: #d97706;
   --color-info: #0891b2;
-  --color-light: #fef3c7;
-  --color-dark: #92400e;
+  --color-light: #d0e8ff;
+  --color-dark: #1e40af;
   --color-white: #ffffff;
-  --color-border: #fbbf24;
-  --color-shadow: rgba(234, 88, 12, 0.1);
-  --gradient-primary: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  --color-border: #bfdbfe;
+  --color-shadow: rgba(74, 163, 240, 0.1);
+  --gradient-primary: linear-gradient(135deg, #d0e8ff 0%, #93c5fd 100%);
+  
+  /* Variables específicas para componentes - Demandante */
+  --color-card-bg: #ffffff;
+  --color-card-border: #bfdbfe;
+  --color-card-shadow: rgba(74, 163, 240, 0.12);
+  --color-btn-bg: #4aa3f0;
+  --color-btn-text: #ffffff;
+  --color-btn-hover-bg: #3b82f6;
+  --color-btn-secondary-bg: #64748b;
+  --color-btn-secondary-hover-bg: #475569;
+  --color-btn-outline-bg: transparent;
+  --color-btn-outline-text: #4aa3f0;
+  --color-btn-outline-border: #4aa3f0;
+  --color-btn-outline-hover-bg: #4aa3f0;
+  --color-btn-outline-hover-text: #ffffff;
+  --color-header-bg: #ffffff;
+  --color-header-text: #1e3a8a;
+  --color-background-light: #d0e8ff;
+}
+
+/* Tema por defecto (no logueado) - Igual que club */
+.theme-default {
+  --color-bg: #f0f4f8;
+  --color-text: #1a365d;
+  --color-text-muted: #475569;
+  --color-primary: #2563eb;
+  --color-accent: #475569;
+  --color-success: #059669;
+  --color-danger: #dc2626;
+  --color-warning: #d97706;
+  --color-info: #0891b2;
+  --color-light: #f1f5f9;
+  --color-dark: #1e293b;
+  --color-white: #ffffff;
+  --color-border: #cbd5e1;
+  --color-shadow: rgba(37, 99, 235, 0.1);
+  --gradient-primary: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+  
+  /* Variables específicas para componentes - Default */
+  --color-card-bg: #ffffff;
+  --color-card-border: #cbd5e1;
+  --color-card-shadow: rgba(37, 99, 235, 0.15);
+  --color-btn-bg: #2563eb;
+  --color-btn-text: #ffffff;
+  --color-btn-hover-bg: #1d4ed8;
+  --color-btn-secondary-bg: #475569;
+  --color-btn-secondary-hover-bg: #334155;
+  --color-btn-outline-bg: transparent;
+  --color-btn-outline-text: #2563eb;
+  --color-btn-outline-border: #2563eb;
+  --color-btn-outline-hover-bg: #2563eb;
+  --color-btn-outline-hover-text: #ffffff;
+  --color-header-bg: #ffffff;
+  --color-header-text: #1a365d;
+  --color-background-light: #f1f5f9;
 } 

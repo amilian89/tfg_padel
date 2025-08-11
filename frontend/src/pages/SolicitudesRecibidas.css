@@ -1,7 +1,7 @@
 /* Solicitudes Recibidas Container */
 .solicitudes-recibidas {
   min-height: 100vh;
-  background-color: #f8f9fa;
+  background-color: var(--color-bg);
 }
 
 /* Solicitudes Header */
@@ -14,9 +14,9 @@
 }
 
 .btn-volver {
-  background-color: transparent;
-  color: #6c757d;
-  border: 1px solid #6c757d;
+  background-color: var(--color-btn-outline-bg);
+  color: var(--color-btn-outline-text);
+  border: 1px solid var(--color-btn-outline-border);
   padding: 8px 16px;
   border-radius: 6px;
   cursor: pointer;
@@ -25,14 +25,14 @@
 }
 
 .btn-volver:hover {
-  background-color: #6c757d;
-  color: white;
+  background-color: var(--color-btn-outline-hover-bg);
+  color: var(--color-btn-outline-hover-text);
 }
 
 .solicitudes-titulo {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #2d3748;
+  color: var(--color-header-text);
   margin: 0;
 }
 
@@ -40,7 +40,7 @@
 .empty-state {
   text-align: center;
   padding: 4rem 0;
-  color: #6c757d;
+  color: var(--color-accent);
 }
 
 .empty-icon {
@@ -51,7 +51,7 @@
 .empty-state h3 {
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
-  color: #495057;
+  color: var(--color-text);
 }
 
 .empty-state p {
@@ -67,16 +67,17 @@
 
 /* Oferta Solicitudes */
 .oferta-solicitudes {
-  background: white;
+  background: var(--color-card-bg);
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px var(--color-card-shadow);
   margin-bottom: 2rem;
   overflow: hidden;
+  border: 1px solid var(--color-card-border);
 }
 
 .oferta-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: var(--gradient-primary);
+  color: var(--color-white);
   padding: 1.5rem;
 }
 
@@ -132,16 +133,16 @@
 }
 
 .solicitud-card {
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 1.5rem;
   margin-bottom: 1rem;
-  background-color: #f8f9fa;
+  background-color: var(--color-background-light);
   transition: box-shadow 0.3s ease;
 }
 
 .solicitud-card:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px var(--color-card-shadow);
 }
 
 .solicitud-card:last-child {
@@ -164,13 +165,13 @@
 .demandante-nombre {
   font-size: 1.2rem;
   font-weight: 600;
-  color: #2d3748;
+  color: var(--color-text);
   margin: 0 0 0.5rem 0;
 }
 
 .demandante-email,
 .demandante-telefono {
-  color: #6c757d;
+  color: var(--color-text-muted);
   margin: 0.25rem 0;
   font-size: 0.95rem;
 }
@@ -216,9 +217,9 @@
 .respuesta-club {
   margin-bottom: 1rem;
   padding: 1rem;
-  background-color: white;
+  background-color: var(--color-card-bg);
   border-radius: 6px;
-  border-left: 4px solid #007bff;
+  border-left: 4px solid var(--color-primary);
 }
 
 .solicitud-mensaje h5,
@@ -227,7 +228,7 @@
 .respuesta-club h5 {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #2d3748;
+  color: var(--color-text);
   margin: 0 0 0.5rem 0;
 }
 
@@ -235,14 +236,14 @@
 .demandante-experiencia p,
 .demandante-formacion p,
 .respuesta-club p {
-  color: #4a5568;
+  color: var(--color-text);
   line-height: 1.5;
   margin: 0;
   font-size: 0.9rem;
 }
 
 .respuesta-club {
-  border-left-color: #28a745;
+  border-left-color: var(--color-success);
   background-color: #f8fff9;
 }
 
@@ -251,7 +252,7 @@
 }
 
 .solicitud-fecha small {
-  color: #6c757d;
+  color: var(--color-text-muted);
   font-size: 0.85rem;
 }
 
@@ -266,9 +267,9 @@
 .solicitud-resultado {
   margin-top: 1rem;
   padding: 1rem;
-  background-color: #f8f9fa;
+  background-color: var(--color-background-light);
   border-radius: 6px;
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--color-border);
 }
 
 .resultado-info {
@@ -278,12 +279,12 @@
 }
 
 .resultado-info strong {
-  color: #2d3748;
+  color: var(--color-text);
   font-size: 0.95rem;
 }
 
 .fecha-respuesta {
-  color: #6c757d;
+  color: var(--color-text-muted);
   font-size: 0.85rem;
   display: block;
   margin-top: 0.25rem;
@@ -295,8 +296,8 @@
 }
 
 .btn-success {
-  background-color: #28a745;
-  color: white;
+  background-color: var(--color-success);
+  color: var(--color-white);
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -309,8 +310,8 @@
 }
 
 .btn-danger {
-  background-color: #dc3545;
-  color: white;
+  background-color: var(--color-danger);
+  color: var(--color-white);
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -350,8 +351,8 @@
 .loading-spinner {
   width: 40px;
   height: 40px;
-  border: 4px solid #e9ecef;
-  border-top: 4px solid #007bff;
+  border: 4px solid var(--color-border);
+  border-top: 4px solid var(--color-primary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 1rem;
@@ -363,12 +364,12 @@
 }
 
 .error-container h2 {
-  color: #dc3545;
+  color: var(--color-danger);
   margin-bottom: 1rem;
 }
 
 .error-container p {
-  color: #6c757d;
+  color: var(--color-text-muted);
   margin-bottom: 2rem;
 }
 
@@ -390,14 +391,14 @@
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s ease;
-  background-color: var(--color-secondary);
+  background-color: var(--color-btn-secondary-bg);
   color: var(--color-white);
-  border: 2px solid var(--color-secondary);
+  border: 2px solid var(--color-btn-secondary-bg);
 }
 
 .btn-load-more:hover:not(:disabled) {
-  background-color: var(--color-secondary-dark);
-  border-color: var(--color-secondary-dark);
+  background-color: var(--color-btn-secondary-hover-bg);
+  border-color: var(--color-btn-secondary-hover-bg);
   transform: translateY(-2px);
 }
 

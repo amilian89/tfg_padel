@@ -7,15 +7,17 @@ const RoleThemeProvider = ({ children }) => {
       const body = document.body;
       
       // Remover clases de tema existentes
-      body.classList.remove('theme-club', 'theme-demandante');
+      body.classList.remove('theme-club', 'theme-demandante', 'theme-default');
       
       // Aplicar clase según el rol
       if (rol === 'club') {
         body.classList.add('theme-club');
       } else if (rol === 'demandante') {
         body.classList.add('theme-demandante');
+      } else {
+        // Si no hay rol o es otro valor, aplicar tema por defecto
+        body.classList.add('theme-default');
       }
-      // Si no hay rol o es otro valor, se mantiene el tema por defecto (:root)
     };
 
     // Aplicar tema inicial
