@@ -123,14 +123,6 @@ const Perfil = () => {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("id");
-    localStorage.removeItem("email");
-    localStorage.removeItem("rol");
-    navigate("/");
-  };
-
   if (loading) {
     return (
       <div className="perfil-page">
@@ -447,13 +439,6 @@ const Perfil = () => {
                 disabled={saving}
               >
                 {saving ? "Guardando..." : "Guardar cambios"}
-              </button>
-              <button 
-                type="button" 
-                className="btn btn-secondary logout-btn"
-                onClick={handleLogout}
-              >
-                Cerrar sesión
               </button>
             </div>
           </form>

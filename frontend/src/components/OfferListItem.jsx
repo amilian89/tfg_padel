@@ -72,9 +72,12 @@ const OfferListItem = ({
             </span>
           </div>
           
-          <p className="offer-desc">
-            {descripcion || 'Sin descripción disponible'}
-          </p>
+          <div className="offer-desc">
+            <span className="desc-label">Descripción:</span>
+            <span className="desc-text">
+              {descripcion || 'Sin descripción disponible'}
+            </span>
+          </div>
         </div>
         
         <div className="offer-cta">

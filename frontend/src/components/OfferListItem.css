@@ -81,7 +81,6 @@
 
 /* Description */
 .offer-desc {
-  color: var(--color-text);
   line-height: 1.5;
   margin: 0;
   font-size: 0.95rem;
@@ -93,6 +92,17 @@
   overflow: hidden;
   text-overflow: ellipsis;
   word-break: break-word;
+}
+
+.desc-label {
+  color: var(--color-text-muted);
+  font-weight: 500;
+  margin-right: 0.5rem;
+}
+
+.desc-text {
+  color: var(--color-text);
+  font-weight: 400;
 }
 
 /* Button */
