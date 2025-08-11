@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../services/auth";
 import Header from "../components/Header";
+import { useTheme } from "../hooks/useTheme";
 import "./Login.css";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { applyTheme } = useTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -28,6 +30,10 @@ const Login = () => {
         localStorage.setItem("email", usuario.email);
         localStorage.setItem("rol", usuario.rol);
       }
+      
+      // Forzar la actualización del tema inmediatamente
+      applyTheme();
+      
       setMensaje("Inicio de sesión exitoso.");
       // Redirigir a la página principal
       setTimeout(() => {

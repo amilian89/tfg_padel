@@ -1,7 +1,7 @@
 /* Hero Section */
 .hero {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: var(--gradient-primary);
+  color: var(--color-white);
   padding: 120px 0;
   text-align: center;
 }
@@ -27,13 +27,17 @@
 .hero-cta {
   font-size: 1.2rem;
   padding: 16px 32px;
-  background-color: white;
-  color: #667eea;
+  background-color: var(--color-white);
+  color: var(--color-primary);
   border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .hero-cta:hover {
-  background-color: #f8f9fa;
+  background-color: var(--color-light);
   transform: translateY(-2px);
 }
 
@@ -48,10 +52,11 @@
 .feature-card {
   text-align: center;
   padding: 2rem;
-  background: white;
+  background: var(--color-white);
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px var(--color-shadow);
   transition: transform 0.3s ease;
+  border: 1px solid var(--color-border);
 }
 
 .feature-card:hover {
@@ -66,7 +71,7 @@
 .feature-card h3 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
-  color: #2d3748;
+  color: var(--color-text);
 }
 
 /* Steps Grid */
@@ -80,17 +85,18 @@
 .step-card {
   text-align: center;
   padding: 2rem;
-  background: white;
+  background: var(--color-white);
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px var(--color-shadow);
   position: relative;
+  border: 1px solid var(--color-border);
 }
 
 .step-number {
   width: 60px;
   height: 60px;
-  background: #007bff;
-  color: white;
+  background: var(--color-primary);
+  color: var(--color-white);
   border-radius: 50%;
   display: flex;
   align-items: center;

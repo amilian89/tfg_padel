@@ -1,0 +1,53 @@
+/* Variables CSS por defecto (fallback) */
+:root {
+  --color-bg: #f8f9fa;
+  --color-text: #2d3748;
+  --color-primary: #007bff;
+  --color-accent: #6c757d;
+  --color-success: #28a745;
+  --color-danger: #dc3545;
+  --color-warning: #ffc107;
+  --color-info: #17a2b8;
+  --color-light: #f8f9fa;
+  --color-dark: #343a40;
+  --color-white: #ffffff;
+  --color-border: #e9ecef;
+  --color-shadow: rgba(0, 0, 0, 0.1);
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Tema para Clubes - Colores fríos (azules) */
+.theme-club {
+  --color-bg: #f0f4f8;
+  --color-text: #1a365d;
+  --color-primary: #2563eb;
+  --color-accent: #475569;
+  --color-success: #059669;
+  --color-danger: #dc2626;
+  --color-warning: #d97706;
+  --color-info: #0891b2;
+  --color-light: #f1f5f9;
+  --color-dark: #1e293b;
+  --color-white: #ffffff;
+  --color-border: #cbd5e1;
+  --color-shadow: rgba(37, 99, 235, 0.1);
+  --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+}
+
+/* Tema para Demandantes - Colores cálidos (verdes/naranjas) */
+.theme-demandante {
+  --color-bg: #fef7ed;
+  --color-text: #451a03;
+  --color-primary: #ea580c;
+  --color-accent: #78716c;
+  --color-success: #16a34a;
+  --color-danger: #dc2626;
+  --color-warning: #ca8a04;
+  --color-info: #0891b2;
+  --color-light: #fef3c7;
+  --color-dark: #92400e;
+  --color-white: #ffffff;
+  --color-border: #fbbf24;
+  --color-shadow: rgba(234, 88, 12, 0.1);
+  --gradient-primary: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+} 

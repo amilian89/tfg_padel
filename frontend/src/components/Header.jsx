@@ -1,9 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "../hooks/useTheme";
 import "./Header.css";
 
 const Header = () => {
   const navigate = useNavigate();
+  const { applyTheme } = useTheme();
   const isLogged = Boolean(window.localStorage.getItem("token"));
   const userRole = window.localStorage.getItem("rol");
 
@@ -12,6 +14,10 @@ const Header = () => {
     window.localStorage.removeItem("id");
     window.localStorage.removeItem("email");
     window.localStorage.removeItem("rol");
+    
+    // Forzar la actualización del tema inmediatamente
+    applyTheme();
+    
     navigate("/");
   };
 
