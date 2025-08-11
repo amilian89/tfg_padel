@@ -8,6 +8,16 @@
 .oferta-header {
   margin-bottom: 2rem;
   padding: 1rem 0;
+  background-color: var(--color-bg) !important;
+  background-image: none !important;
+  background: var(--color-bg) !important;
+  background: linear-gradient(none) !important;
+  background: none !important;
+}
+
+.oferta-header::before,
+.oferta-header::after {
+  display: none !important;
 }
 
 .btn-volver {
@@ -79,7 +89,7 @@
 .club-info {
   padding: 2rem;
   border-bottom: 1px solid var(--color-border);
-  background-color: var(--color-background-light);
+  background-color: var(--color-card-bg);
 }
 
 .club-info h3 {
