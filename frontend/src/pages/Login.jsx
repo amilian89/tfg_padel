@@ -2,25 +2,27 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../services/auth";
 import Header from "../components/Header";
+import Toast from "../components/Toast";
 import { useTheme } from "../hooks/useTheme";
+import { useToast } from "../hooks/useToast";
 import "./Login.css";
 
 const Login = () => {
   const navigate = useNavigate();
   const { applyTheme } = useTheme();
+  const { toast, showSuccess, showError, hideToast } = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [mensaje, setMensaje] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setMensaje("");
     if (!email || !password) {
-      setError("Por favor, completa ambos campos.");
+      showError("Por favor, completa ambos campos.");
       return;
     }
+    
+    setLoading(true);
     try {
       const res = await login({ email, password });
       const { token, usuario } = res.data;
@@ -34,21 +36,24 @@ const Login = () => {
       // Forzar la actualización del tema inmediatamente
       applyTheme();
       
-      setMensaje("Inicio de sesión exitoso.");
-      // Redirigir a la página principal
+      // Mostrar toast de éxito y redirigir
+      showSuccess("Sesión iniciada correctamente");
       setTimeout(() => {
-        navigate("/");
-      }, 1000);
+        navigate("/panel");
+      }, 1500);
     } catch (err) {
-      setError(
+      showError(
         err.response?.data?.error || "Error al iniciar sesión. Inténtalo de nuevo."
       );
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="login-page">
       <Header />
+      {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
       <div className="login-container">
         <div className="form-wrapper">
           <div className="form-header">
@@ -68,6 +73,7 @@ const Login = () => {
                 className="form-input"
                 placeholder="tu@email.com"
                 required
+                disabled={loading}
               />
             </div>
 
@@ -80,17 +86,18 @@ const Login = () => {
                 className="form-input"
                 placeholder="Tu contraseña"
                 required
+                disabled={loading}
               />
             </div>
 
-            {/* Mensajes de estado */}
-            {mensaje && <div className="success-message">{mensaje}</div>}
-            {error && <div className="error-message">{error}</div>}
-
             {/* Botón de envío */}
             <div className="form-actions">
-              <button type="submit" className="btn btn-primary submit-btn">
-                Iniciar sesión
+              <button 
+                type="submit" 
+                className="btn btn-primary submit-btn"
+                disabled={loading}
+              >
+                {loading ? 'Iniciando sesión...' : 'Iniciar sesión'}
               </button>
             </div>
 
@@ -102,6 +109,7 @@ const Login = () => {
                   type="button" 
                   className="link-button"
                   onClick={() => navigate("/register")}
+                  disabled={loading}
                 >
                   Regístrate aquí
                 </button>

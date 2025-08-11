@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../components/Header";
+import Toast from "../components/Toast";
+import { useToast } from "../hooks/useToast";
 import "./PublicarOferta.css";
 
 const PublicarOferta = () => {
   const navigate = useNavigate();
+  const { toast, showSuccess, showError, hideToast } = useToast();
   const [formData, setFormData] = useState({
     titulo: "",
     tipoDeporte: "",
@@ -20,8 +23,6 @@ const PublicarOferta = () => {
     requisitosIdiomas: ""
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
@@ -55,42 +56,15 @@ const PublicarOferta = () => {
   };
 
   const validateForm = () => {
-    const requiredFields = [
-      'titulo', 'tipoDeporte', 'descripcion', 
-      'ubicacion', 'fechaLimite', 'salario'
-    ];
-
-    for (const field of requiredFields) {
-      if (!formData[field].trim()) {
-        setError(`El campo ${field === 'tipoDeporte' ? 'deporte' : field} es obligatorio`);
-        return false;
-      }
-    }
-
-    // Validar que la fecha límite no sea anterior a hoy
-    const fechaLimite = new Date(formData.fechaLimite);
-    const hoy = new Date();
-    hoy.setHours(0, 0, 0, 0);
-
-    if (fechaLimite < hoy) {
-      setError("La fecha límite no puede ser anterior a hoy");
+    if (!formData.titulo || !formData.tipoDeporte || !formData.descripcion || !formData.salario) {
+      showError("Por favor, completa todos los campos obligatorios.");
       return false;
     }
-
-    // Validar que el salario sea un número positivo
-    const salario = parseFloat(formData.salario);
-    if (isNaN(salario) || salario <= 0) {
-      setError("El salario debe ser un número positivo");
-      return false;
-    }
-
     return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
-    setSuccess(false);
 
     if (!validateForm()) {
       return;
@@ -111,34 +85,18 @@ const PublicarOferta = () => {
         }
       });
 
-      setSuccess(true);
-      
-      // Limpiar formulario
-      setFormData({
-        titulo: "",
-        tipoDeporte: "",
-        descripcion: "",
-        ubicacion: "",
-        fechaLimite: "",
-        salario: "",
-        tipoContrato: "Indefinido",
-        jornada: "Completa",
-        requisitosExperiencia: "",
-        requisitosFormacion: "",
-        requisitosIdiomas: ""
-      });
-
-      // Redirigir al panel después de 2 segundos
+      // Mostrar toast de éxito y redirigir
+      showSuccess("Oferta publicada correctamente");
       setTimeout(() => {
         navigate("/panel");
-      }, 2000);
+      }, 1500);
 
     } catch (err) {
       console.error("Error al crear oferta:", err);
       if (err.response?.data?.error) {
-        setError(err.response.data.error);
+        showError(err.response.data.error);
       } else {
-        setError("Error al crear la oferta. Por favor, intenta de nuevo.");
+        showError("Error al crear la oferta. Por favor, intenta de nuevo.");
       }
     } finally {
       setLoading(false);
@@ -162,6 +120,7 @@ const PublicarOferta = () => {
   return (
     <div className="publicar-oferta">
       <Header />
+      {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
       
       <div className="container">
         <div className="publicar-header">
@@ -173,25 +132,6 @@ const PublicarOferta = () => {
           </button>
           <h1 className="publicar-titulo">Publicar Nueva Oferta</h1>
         </div>
-
-        {success && (
-          <div className="success-message">
-            <h3>✅ ¡Oferta creada exitosamente!</h3>
-            <p>Serás redirigido al panel en unos segundos...</p>
-          </div>
-        )}
-
-        {error && (
-          <div className="error-message">
-            <p>{error}</p>
-            <button 
-              className="btn btn-secondary"
-              onClick={() => setError(null)}
-            >
-              Cerrar
-            </button>
-          </div>
-        )}
 
         <div className="form-container">
           <form onSubmit={handleSubmit} className="oferta-form">

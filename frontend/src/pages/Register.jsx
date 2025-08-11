@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../components/Header";
+import Toast from "../components/Toast";
+import { useToast } from "../hooks/useToast";
 import "./Register.css";
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -39,11 +42,12 @@ const camposDemandante = {
 };
 
 const Register = () => {
+  const navigate = useNavigate();
+  const { toast, showSuccess, showError, hideToast } = useToast();
   const [comunes, setComunes] = useState(camposComunes);
   const [club, setClub] = useState(camposClub);
   const [demandante, setDemandante] = useState(camposDemandante);
-  const [mensaje, setMensaje] = useState("");
-  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleComunes = (e) => {
     const { name, value } = e.target;
@@ -81,12 +85,12 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMensaje("");
-    setError("");
     if (!validar()) {
-      setError("Por favor, completa todos los campos obligatorios.");
+      showError("Por favor, completa todos los campos obligatorios.");
       return;
     }
+    
+    setLoading(true);
     // Estructurar payload
     const payload = {
       usuario: {
@@ -108,14 +112,18 @@ const Register = () => {
     }
     try {
       await axios.post(`${API_URL}/auth/register`, payload);
-      setMensaje("Registro exitoso. ¡Ya puedes iniciar sesión!");
-      setComunes(camposComunes);
-      setClub(camposClub);
-      setDemandante(camposDemandante);
+      
+      // Mostrar toast de éxito y redirigir
+      showSuccess("Registro correcto. Inicia sesión");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
     } catch (err) {
-      setError(
+      showError(
         err.response?.data?.message || "Error al registrar. Inténtalo de nuevo."
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -425,13 +433,12 @@ const Register = () => {
             )}
 
             {/* Mensajes de estado */}
-            {mensaje && <div className="success-message">{mensaje}</div>}
-            {error && <div className="error-message">{error}</div>}
+            {toast && <Toast type={toast.type} message={toast.message} onClose={hideToast} />}
 
             {/* Botón de envío */}
             <div className="form-actions">
-              <button type="submit" className="btn btn-primary submit-btn">
-                Crear cuenta
+              <button type="submit" className="btn btn-primary submit-btn" disabled={loading}>
+                {loading ? "Creando cuenta..." : "Crear cuenta"}
               </button>
             </div>
           </form>

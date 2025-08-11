@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../components/Header";
+import Toast from "../components/Toast";
+import { useToast } from "../hooks/useToast";
 import "./SolicitudesRecibidas.css";
 
 const SolicitudesRecibidas = () => {
   const navigate = useNavigate();
+  const { toast, showSuccess, showError, hideToast } = useToast();
   const [solicitudes, setSolicitudes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -142,8 +145,7 @@ const SolicitudesRecibidas = () => {
         ? 'Solicitud aceptada exitosamente' 
         : 'Solicitud rechazada exitosamente';
       
-      // Opcional: mostrar una notificación temporal
-      console.log(mensaje);
+      showSuccess(mensaje);
 
     } catch (err) {
       console.error(`Error al ${estado === 'aceptada' ? 'aceptar' : 'rechazar'} solicitud:`, err);
@@ -158,7 +160,7 @@ const SolicitudesRecibidas = () => {
         mensajeError = "No tienes permisos para realizar esta acción";
       }
       
-      alert(mensajeError);
+      showError(mensajeError);
     } finally {
       // Remover la solicitud del conjunto de solicitudes en proceso
       setProcesandoSolicitudes(prev => {
@@ -212,6 +214,7 @@ const SolicitudesRecibidas = () => {
   return (
     <div className="solicitudes-recibidas">
       <Header />
+      {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
       
       <div className="container">
         <div className="solicitudes-header">

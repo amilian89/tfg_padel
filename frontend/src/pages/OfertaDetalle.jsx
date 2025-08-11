@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../components/Header";
+import Toast from "../components/Toast";
+import { useToast } from "../hooks/useToast";
 import "./OfertaDetalle.css";
 
 const OfertaDetalle = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { toast, showSuccess, showError, hideToast } = useToast();
   const [oferta, setOferta] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -62,7 +65,7 @@ const OfertaDetalle = () => {
 
   const handleAplicar = async () => {
     if (!mensajeSolicitud.trim()) {
-      alert("Por favor, escribe un mensaje de solicitud");
+      showError("Por favor, escribe un mensaje de solicitud");
       return;
     }
 
@@ -80,14 +83,19 @@ const OfertaDetalle = () => {
       setYaAplicado(true);
       setMostrarFormulario(false);
       setMensajeSolicitud("");
-      alert("¡Solicitud enviada con éxito!");
+      
+      // Mostrar toast de éxito y redirigir
+      showSuccess("Solicitud enviada correctamente");
+      setTimeout(() => {
+        navigate("/mis-solicitudes");
+      }, 1500);
     } catch (err) {
       console.error("Error al aplicar:", err);
       if (err.response?.data?.error === "Ya has enviado una solicitud para esta oferta") {
         setYaAplicado(true);
-        alert("Ya has aplicado a esta oferta anteriormente");
+        showError("Ya has aplicado a esta oferta anteriormente");
       } else {
-        alert("Error al enviar la solicitud. Por favor, intenta de nuevo.");
+        showError("Error al enviar la solicitud. Por favor, intenta de nuevo.");
       }
     } finally {
       setAplicando(false);
@@ -160,6 +168,7 @@ const OfertaDetalle = () => {
   return (
     <div className="oferta-detalle">
       <Header />
+      {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
       
       <div className="container">
         <div className="oferta-header">
