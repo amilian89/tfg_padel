@@ -1,16 +1,16 @@
 /* Oferta Detalle Container */
 .oferta-detalle {
   min-height: 100vh;
-  background-color: var(--color-bg);
+  background-color: #ffffff;
 }
 
 /* Oferta Header */
 .oferta-header {
   margin-bottom: 2rem;
   padding: 1rem 0;
-  background-color: var(--color-bg) !important;
+  background-color: #ffffff !important;
   background-image: none !important;
-  background: var(--color-bg) !important;
+  background: #ffffff !important;
   background: linear-gradient(none) !important;
   background: none !important;
 }

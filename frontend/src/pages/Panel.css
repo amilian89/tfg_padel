@@ -1,7 +1,7 @@
 /* Panel Container */
 .panel {
   min-height: 100vh;
-  background-color: var(--color-bg);
+  background-color: #ffffff;
 }
 
 /* Panel Header */

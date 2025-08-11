@@ -1,7 +1,7 @@
 /* Solicitudes Recibidas Container */
 .solicitudes-recibidas {
   min-height: 100vh;
-  background-color: var(--color-bg);
+  background-color: #ffffff;
 }
 
 /* Solicitudes Header */

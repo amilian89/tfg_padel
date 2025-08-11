@@ -13,7 +13,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.6;
   color: var(--color-text);
-  background-color: var(--color-bg);
+  background-color: #ffffff;
 }
 
 code {
@@ -169,7 +169,7 @@ code {
 }
 
 .bg-secondary {
-  background-color: var(--color-bg);
+  background-color: #ffffff;
 }
 
 .bg-dark {
