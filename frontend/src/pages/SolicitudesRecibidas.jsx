@@ -11,9 +11,16 @@ const SolicitudesRecibidas = () => {
   const { toast, showSuccess, showError, hideToast } = useToast();
   const [solicitudes, setSolicitudes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState(null);
   const [userData, setUserData] = useState(null);
   const [procesandoSolicitudes, setProcesandoSolicitudes] = useState(new Set());
+  
+  // Estado de paginación
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(10);
+  const [total, setTotal] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
     // Verificar autenticación y rol
@@ -36,20 +43,44 @@ const SolicitudesRecibidas = () => {
       id: userId
     });
 
-    // Cargar solicitudes
-    loadSolicitudes();
+    // Cargar primera página de solicitudes
+    loadSolicitudes(1, true);
   }, [navigate]);
 
-  const loadSolicitudes = async () => {
+  const loadSolicitudes = async (page = 1, reset = false) => {
     try {
-      setLoading(true);
+      if (reset) {
+        setLoading(true);
+        setSolicitudes([]);
+        setCurrentPage(1);
+        setHasMore(true);
+      } else {
+        setLoadingMore(true);
+      }
+
       const token = localStorage.getItem("token");
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/solicitudes?rol=club`, {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/solicitudes`, {
         headers: {
           Authorization: `Bearer ${token}`
+        },
+        params: {
+          rol: 'club',
+          page: page,
+          pageSize: pageSize
         }
       });
-      setSolicitudes(response.data);
+
+      const { items, total: totalItems, hasMore: moreAvailable } = response.data;
+
+      if (reset) {
+        setSolicitudes(items);
+      } else {
+        setSolicitudes(prev => [...prev, ...items]);
+      }
+
+      setTotal(totalItems);
+      setHasMore(moreAvailable);
+      setCurrentPage(page);
       setError(null);
     } catch (err) {
       console.error("Error al cargar solicitudes:", err);
@@ -60,6 +91,13 @@ const SolicitudesRecibidas = () => {
       }
     } finally {
       setLoading(false);
+      setLoadingMore(false);
+    }
+  };
+
+  const handleCargarMas = () => {
+    if (!loadingMore && hasMore) {
+      loadSolicitudes(currentPage + 1, false);
     }
   };
 
@@ -350,6 +388,34 @@ const SolicitudesRecibidas = () => {
                 </div>
               </div>
             ))}
+
+            {/* Botón "Cargar más" */}
+            {hasMore && (
+              <div className="load-more-container">
+                <button 
+                  className="btn btn-secondary btn-load-more"
+                  onClick={handleCargarMas}
+                  disabled={loadingMore}
+                >
+                  {loadingMore ? (
+                    <>
+                      <div className="loading-spinner-small"></div>
+                      Cargando...
+                    </>
+                  ) : (
+                    'Cargar más solicitudes'
+                  )}
+                </button>
+              </div>
+            )}
+
+            {/* Mensaje de fin de lista */}
+            {!hasMore && solicitudes.length > 0 && (
+              <div className="end-of-list">
+                <p>No hay más solicitudes</p>
+                <span className="total-info">Mostrando {solicitudes.length} de {total} solicitudes</span>
+              </div>
+            )}
           </div>
         )}
       </div>

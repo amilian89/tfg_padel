@@ -100,10 +100,21 @@ const solicitarOferta = async (req, res) => {
   }
 };
 
-// LISTAR SOLICITUDES
+// LISTAR SOLICITUDES CON PAGINACIÓN
 const listarSolicitudes = async (req, res) => {
   try {
     const { rol } = req.query;
+    
+    // Obtener parámetros de paginación
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 10;
+    
+    // Validar parámetros de paginación
+    if (page < 1 || pageSize < 1 || pageSize > 100) {
+      return res.status(400).json({
+        error: 'Parámetros de paginación inválidos. page >= 1, pageSize entre 1 y 100'
+      });
+    }
 
     // Obtener el usuario autenticado del token JWT
     const usuarioId = req.usuario.id;
@@ -129,7 +140,11 @@ const listarSolicitudes = async (req, res) => {
       });
     }
 
+    // Calcular skip para la paginación
+    const skip = (page - 1) * pageSize;
+
     let solicitudes = [];
+    let total = 0;
 
     if (rol === 'demandante') {
       // Buscar el demandante del usuario
@@ -143,7 +158,7 @@ const listarSolicitudes = async (req, res) => {
         });
       }
 
-      // Obtener todas las solicitudes del demandante
+      // Obtener solicitudes del demandante con paginación
       solicitudes = await prisma.solicitud.findMany({
         where: {
           demandanteId: demandante.id
@@ -166,6 +181,15 @@ const listarSolicitudes = async (req, res) => {
         },
         orderBy: {
           fechaSolicitud: 'desc'
+        },
+        skip: skip,
+        take: pageSize
+      });
+
+      // Obtener total de solicitudes del demandante
+      total = await prisma.solicitud.count({
+        where: {
+          demandanteId: demandante.id
         }
       });
 
@@ -190,10 +214,16 @@ const listarSolicitudes = async (req, res) => {
       const ofertaIds = ofertasDelClub.map(oferta => oferta.id);
 
       if (ofertaIds.length === 0) {
-        return res.status(200).json([]);
+        return res.status(200).json({
+          items: [],
+          page: page,
+          pageSize: pageSize,
+          total: 0,
+          hasMore: false
+        });
       }
 
-      // Obtener todas las solicitudes de las ofertas del club
+      // Obtener solicitudes de las ofertas del club con paginación
       solicitudes = await prisma.solicitud.findMany({
         where: {
           ofertaId: {
@@ -226,12 +256,29 @@ const listarSolicitudes = async (req, res) => {
         },
         orderBy: {
           fechaSolicitud: 'desc'
+        },
+        skip: skip,
+        take: pageSize
+      });
+
+      // Obtener total de solicitudes de las ofertas del club
+      total = await prisma.solicitud.count({
+        where: {
+          ofertaId: {
+            in: ofertaIds
+          }
         }
       });
     }
 
-    // Devolver respuesta exitosa
-    res.status(200).json(solicitudes);
+    // Devolver respuesta con información de paginación
+    res.status(200).json({
+      items: solicitudes,
+      page: page,
+      pageSize: pageSize,
+      total: total,
+      hasMore: skip + solicitudes.length < total
+    });
 
   } catch (error) {
     console.error('Error al listar solicitudes:', error);

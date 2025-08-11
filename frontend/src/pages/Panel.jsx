@@ -8,8 +8,15 @@ const Panel = () => {
   const navigate = useNavigate();
   const [ofertas, setOfertas] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState(null);
   const [userData, setUserData] = useState(null);
+  
+  // Estado de paginación
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(10);
+  const [total, setTotal] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
     // Verificar autenticación
@@ -30,26 +37,56 @@ const Panel = () => {
       name: userName
     });
 
-    // Cargar ofertas
-    loadOfertas();
+    // Cargar primera página de ofertas
+    loadOfertas(1, true);
   }, [navigate]);
 
-  const loadOfertas = async () => {
+  const loadOfertas = async (page = 1, reset = false) => {
     try {
-      setLoading(true);
+      if (reset) {
+        setLoading(true);
+        setOfertas([]);
+        setCurrentPage(1);
+        setHasMore(true);
+      } else {
+        setLoadingMore(true);
+      }
+
       const token = localStorage.getItem("token");
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/ofertas`, {
         headers: {
           Authorization: `Bearer ${token}`
+        },
+        params: {
+          page: page,
+          pageSize: pageSize
         }
       });
-      setOfertas(response.data);
+
+      const { items, total: totalItems, hasMore: moreAvailable } = response.data;
+
+      if (reset) {
+        setOfertas(items);
+      } else {
+        setOfertas(prev => [...prev, ...items]);
+      }
+
+      setTotal(totalItems);
+      setHasMore(moreAvailable);
+      setCurrentPage(page);
       setError(null);
     } catch (err) {
       console.error("Error al cargar ofertas:", err);
       setError("Error al cargar las ofertas. Por favor, intenta de nuevo.");
     } finally {
       setLoading(false);
+      setLoadingMore(false);
+    }
+  };
+
+  const handleCargarMas = () => {
+    if (!loadingMore && hasMore) {
+      loadOfertas(currentPage + 1, false);
     }
   };
 
@@ -97,7 +134,7 @@ const Panel = () => {
             <p>{error}</p>
             <button 
               className="btn btn-secondary"
-              onClick={loadOfertas}
+              onClick={() => loadOfertas(1, true)}
             >
               Reintentar
             </button>
@@ -113,48 +150,78 @@ const Panel = () => {
         )}
 
         {!error && ofertas.length > 0 && (
-          <div className="ofertas-grid">
-            {ofertas.map((oferta) => (
-              <div key={oferta.id} className="oferta-card">
-                <div className="oferta-header">
-                  <h3 className="oferta-titulo">{oferta.titulo || 'Sin título'}</h3>
-                  {oferta.tipoDeporte && (
-                    <span className={`deporte-badge ${oferta.tipoDeporte.toLowerCase()}`}>
-                      {oferta.tipoDeporte}
-                    </span>
-                  )}
-                </div>
-                
-                <div className="oferta-info">
-                  <div className="info-item">
-                    <span className="info-label">Club:</span>
-                    <span className="info-value">{oferta.club?.nombreClub || 'No especificado'}</span>
+          <>
+            <div className="ofertas-grid">
+              {ofertas.map((oferta) => (
+                <div key={oferta.id} className="oferta-card">
+                  <div className="oferta-header">
+                    <h3 className="oferta-titulo">{oferta.titulo || 'Sin título'}</h3>
+                    {oferta.tipoDeporte && (
+                      <span className={`deporte-badge ${oferta.tipoDeporte.toLowerCase()}`}>
+                        {oferta.tipoDeporte}
+                      </span>
+                    )}
                   </div>
-                  {oferta.ubicacion && (
+                  
+                  <div className="oferta-info">
                     <div className="info-item">
-                      <span className="info-label">Ubicación:</span>
-                      <span className="info-value">{oferta.ubicacion}</span>
+                      <span className="info-label">Club:</span>
+                      <span className="info-value">{oferta.club?.nombreClub || 'No especificado'}</span>
                     </div>
-                  )}
-                  {oferta.salario && (
-                    <div className="info-item">
-                      <span className="info-label">Salario:</span>
-                      <span className="info-value">{oferta.salario}€</span>
-                    </div>
-                  )}
-                </div>
+                    {oferta.ubicacion && (
+                      <div className="info-item">
+                        <span className="info-label">Ubicación:</span>
+                        <span className="info-value">{oferta.ubicacion}</span>
+                      </div>
+                    )}
+                    {oferta.salario && (
+                      <div className="info-item">
+                        <span className="info-label">Salario:</span>
+                        <span className="info-value">{oferta.salario}€</span>
+                      </div>
+                    )}
+                  </div>
 
-                <div className="oferta-actions">
-                  <button 
-                    className="btn btn-primary btn-ver-mas"
-                    onClick={() => handleVerOferta(oferta.id)}
-                  >
-                    Ver más
-                  </button>
+                  <div className="oferta-actions">
+                    <button 
+                      className="btn btn-primary btn-ver-mas"
+                      onClick={() => handleVerOferta(oferta.id)}
+                    >
+                      Ver más
+                    </button>
+                  </div>
                 </div>
+              ))}
+            </div>
+
+            {/* Botón "Cargar más" */}
+            {hasMore && (
+              <div className="load-more-container">
+                <button 
+                  className="btn btn-secondary btn-load-more"
+                  onClick={handleCargarMas}
+                  disabled={loadingMore}
+                >
+                  {loadingMore ? (
+                    <>
+                      <div className="loading-spinner-small"></div>
+                      Cargando...
+                    </>
+                  ) : (
+                    'Cargar más ofertas'
+                  )}
+                </button>
               </div>
-            ))}
-          </div>
+            )}
+
+            {/* Mensaje de fin de lista */}
+            {!hasMore && ofertas.length > 0 && (
+              <div className="end-of-list">
+                <p>No hay más ofertas disponibles</p>
+                <span className="total-info">Mostrando {ofertas.length} de {total} ofertas</span>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

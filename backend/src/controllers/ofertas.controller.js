@@ -1,8 +1,23 @@
 const prisma = require('../prisma/client');
 
-// OBTENER TODAS LAS OFERTAS
+// OBTENER TODAS LAS OFERTAS CON PAGINACIÓN
 const getOfertas = async (req, res) => {
   try {
+    // Obtener parámetros de paginación
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 10;
+    
+    // Validar parámetros
+    if (page < 1 || pageSize < 1 || pageSize > 100) {
+      return res.status(400).json({
+        error: 'Parámetros de paginación inválidos. page >= 1, pageSize entre 1 y 100'
+      });
+    }
+
+    // Calcular skip para la paginación
+    const skip = (page - 1) * pageSize;
+
+    // Obtener ofertas con paginación
     const ofertas = await prisma.oferta.findMany({
       include: {
         club: {
@@ -15,11 +30,22 @@ const getOfertas = async (req, res) => {
       },
       orderBy: {
         fechaPublicacion: 'desc'
-      }
+      },
+      skip: skip,
+      take: pageSize
     });
 
-    // Devolver respuesta exitosa
-    res.status(200).json(ofertas);
+    // Obtener el total de ofertas para la paginación
+    const total = await prisma.oferta.count();
+
+    // Devolver respuesta con información de paginación
+    res.status(200).json({
+      items: ofertas,
+      page: page,
+      pageSize: pageSize,
+      total: total,
+      hasMore: skip + ofertas.length < total
+    });
 
   } catch (error) {
     console.error('Error al obtener ofertas:', error);
