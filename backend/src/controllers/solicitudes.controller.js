@@ -370,6 +370,7 @@ const responderSolicitud = async (req, res) => {
         },
         demandante: {
           select: {
+            usuarioId: true,
             usuario: {
               select: {
                 nombre: true,
