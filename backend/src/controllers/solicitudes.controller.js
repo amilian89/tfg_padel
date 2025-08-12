@@ -1,4 +1,6 @@
 const prisma = require('../prisma/client');
+const { emitToUser } = require('../realtime/pusher');
+const { crearNotificacion } = require('./notificaciones.controller');
 
 // SOLICITAR OFERTA
 const solicitarOferta = async (req, res) => {
@@ -70,7 +72,8 @@ const solicitarOferta = async (req, res) => {
             titulo: true,
             club: {
               select: {
-                nombreClub: true
+                nombreClub: true,
+                usuarioId: true
               }
             }
           }
@@ -88,6 +91,26 @@ const solicitarOferta = async (req, res) => {
         }
       }
     });
+
+    // Crear notificación para el club
+    try {
+      const clubUsuarioId = nuevaSolicitud.oferta.club.usuarioId;
+      const contenido = `Nuevo candidato en '${nuevaSolicitud.oferta.titulo}'`;
+      const urlRedireccion = `/solicitudes`;
+      
+      await crearNotificacion(clubUsuarioId, 'nueva_solicitud', contenido, urlRedireccion);
+      
+      // Emitir evento en tiempo real
+      emitToUser(clubUsuarioId, 'notificacion:nueva', {
+        solicitudId: nuevaSolicitud.id,
+        ofertaId: nuevaSolicitud.ofertaId,
+        tipo: 'nueva_solicitud',
+        contenido
+      });
+    } catch (error) {
+      console.error('Error al crear notificación:', error);
+      // No fallar la solicitud si la notificación falla
+    }
 
     // Devolver respuesta exitosa
     res.status(201).json(nuevaSolicitud);
@@ -358,6 +381,27 @@ const responderSolicitud = async (req, res) => {
         }
       }
     });
+
+    // Crear notificación para el demandante
+    try {
+      const demandanteUsuarioId = solicitudActualizada.demandante.usuarioId;
+      const contenido = `Tu solicitud en '${solicitudActualizada.oferta.titulo}' ha sido ${estado}`;
+      const urlRedireccion = `/mis-solicitudes`;
+      
+      await crearNotificacion(demandanteUsuarioId, 'respuesta_solicitud', contenido, urlRedireccion);
+      
+      // Emitir evento en tiempo real
+      emitToUser(demandanteUsuarioId, 'notificacion:nueva', {
+        solicitudId: solicitudActualizada.id,
+        ofertaId: solicitudActualizada.ofertaId,
+        tipo: 'respuesta_solicitud',
+        estado,
+        contenido
+      });
+    } catch (error) {
+      console.error('Error al crear notificación:', error);
+      // No fallar la respuesta si la notificación falla
+    }
 
     // Devolver respuesta exitosa
     res.status(200).json(solicitudActualizada);

@@ -1,0 +1,158 @@
+.notificaciones-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.notificaciones-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.notificaciones-header h1 {
+  color: var(--color-text);
+  margin: 0;
+}
+
+.notificaciones-count {
+  background: var(--color-primary);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.notificaciones-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.notificacion-item {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.notificacion-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--color-shadow);
+  border-color: var(--color-primary);
+}
+
+.notificacion-item.unread {
+  border-left: 4px solid var(--color-primary);
+  background: var(--color-card-bg);
+}
+
+.notificacion-item.unread::before {
+  content: '';
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 8px;
+  height: 8px;
+  background: var(--color-primary);
+  border-radius: 50%;
+}
+
+.notificacion-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.notificacion-text {
+  color: var(--color-text);
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.notificacion-fecha {
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+}
+
+.btn-marcar-leida {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: var(--color-secondary);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-marcar-leida:hover {
+  background: var(--color-secondary-dark);
+}
+
+.load-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem 0;
+  color: var(--color-text-secondary);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 0;
+  color: var(--color-text-secondary);
+}
+
+.empty-state p {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.error-message {
+  background: var(--color-error-bg);
+  color: var(--color-error);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  border: 1px solid var(--color-error);
+}
+
+@media (max-width: 768px) {
+  .notificaciones-container {
+    padding: 1rem;
+  }
+  
+  .notificaciones-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  
+  .notificacion-item {
+    padding: 1rem;
+  }
+  
+  .btn-marcar-leida {
+    position: static;
+    margin-top: 1rem;
+    width: 100%;
+  }
+} 

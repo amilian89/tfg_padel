@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme";
+import { useNotificaciones } from "../hooks/useNotificaciones";
 import "./Header.css";
 
 const Header = () => {
@@ -8,6 +9,10 @@ const Header = () => {
   const { applyTheme } = useTheme();
   const isLogged = Boolean(window.localStorage.getItem("token"));
   const userRole = window.localStorage.getItem("rol");
+  const usuarioId = window.localStorage.getItem("id");
+  
+  // Hook de notificaciones
+  const { contadorNoLeidas, isConnected } = useNotificaciones(usuarioId);
 
   const handleLogout = () => {
     window.localStorage.removeItem("token");
@@ -73,6 +78,16 @@ const Header = () => {
                   onClick={() => navigate("/perfil")}
                 >
                   Mi perfil
+                </button>
+                <button 
+                  className="btn btn-outline notification-btn" 
+                  onClick={() => navigate("/notificaciones")}
+                  title="Notificaciones"
+                >
+                  🔔
+                  {contadorNoLeidas > 0 && (
+                    <span className="notification-badge">{contadorNoLeidas}</span>
+                  )}
                 </button>
                 <button 
                   className="btn btn-secondary" 

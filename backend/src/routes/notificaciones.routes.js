@@ -1,13 +1,22 @@
 const express = require('express');
-const { crearNotificacion, listarNotificaciones } = require('../controllers/notificaciones.controller');
-const verifyToken = require('../middleware/verifyToken');
-
 const router = express.Router();
+const { 
+  listarNotificaciones, 
+  marcarComoLeida, 
+  obtenerContadorNoLeidas 
+} = require('../controllers/notificaciones.controller');
+const { verifyToken } = require('../middleware/verifyToken');
 
-// Ruta para crear una notificación (usuarios autenticados)
-router.post('/', verifyToken, crearNotificacion);
+// Todas las rutas requieren autenticación
+router.use(verifyToken);
 
-// Ruta para listar notificaciones de un usuario (usuarios autenticados)
-router.get('/:usuarioId', verifyToken, listarNotificaciones);
+// GET /notificaciones - Listar notificaciones con paginación
+router.get('/', listarNotificaciones);
+
+// PUT /notificaciones/:id/leida - Marcar notificación como leída
+router.put('/:id/leida', marcarComoLeida);
+
+// GET /notificaciones/unread-count - Obtener contador de no leídas
+router.get('/unread-count', obtenerContadorNoLeidas);
 
 module.exports = router; 

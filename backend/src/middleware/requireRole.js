@@ -7,4 +7,4 @@ function requireRole(rolEsperado) {
   };
 }
 
-module.exports = requireRole; 
+module.exports = { requireRole }; 

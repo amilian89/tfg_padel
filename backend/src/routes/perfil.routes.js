@@ -1,6 +1,6 @@
 const express = require('express');
 const { getPerfil, actualizarPerfil, getMiPerfil, actualizarMiPerfil } = require('../controllers/perfil.controller');
-const verifyToken = require('../middleware/verifyToken');
+const { verifyToken } = require('../middleware/verifyToken');
 
 const router = express.Router();
 

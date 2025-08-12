@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../components/Header";
+import { useNotificaciones } from "../hooks/useNotificaciones";
 import "./MisSolicitudes.css";
 
 const MisSolicitudes = () => {
@@ -17,6 +18,10 @@ const MisSolicitudes = () => {
   const [pageSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [hasMore, setHasMore] = useState(true);
+
+  // Hook de notificaciones
+  const usuarioId = localStorage.getItem("id");
+  const { contadorNoLeidas } = useNotificaciones(usuarioId);
 
   useEffect(() => {
     // Verificar autenticación y rol
@@ -42,6 +47,13 @@ const MisSolicitudes = () => {
     // Cargar primera página de solicitudes
     loadSolicitudes(1, true);
   }, [navigate]);
+
+  // Refetch cuando llegue una nueva notificación
+  useEffect(() => {
+    if (contadorNoLeidas > 0) {
+      loadSolicitudes(1, true);
+    }
+  }, [contadorNoLeidas]);
 
   const loadSolicitudes = async (page = 1, reset = false) => {
     try {

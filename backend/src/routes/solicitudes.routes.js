@@ -1,7 +1,7 @@
 const express = require('express');
 const { solicitarOferta, listarSolicitudes, responderSolicitud } = require('../controllers/solicitudes.controller');
-const verifyToken = require('../middleware/verifyToken');
-const requireRole = require('../middleware/requireRole');
+const { verifyToken } = require('../middleware/verifyToken');
+const { requireRole } = require('../middleware/requireRole');
 
 const router = express.Router();
 

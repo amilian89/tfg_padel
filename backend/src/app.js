@@ -4,6 +4,7 @@ const authRoutes = require('./routes/auth.routes');
 const ofertasRoutes = require('./routes/ofertas.routes');
 const solicitudesRoutes = require('./routes/solicitudes.routes');
 const perfilRoutes = require('./routes/perfil.routes');
+const notificacionesRoutes = require('./routes/notificaciones.routes');
 
 const app = express();
 const PORT = 3000;
@@ -17,6 +18,7 @@ app.use('/auth', authRoutes);
 app.use('/ofertas', ofertasRoutes);
 app.use('/solicitudes', solicitudesRoutes);
 app.use('/perfil', perfilRoutes);
+app.use('/notificaciones', notificacionesRoutes);
 
 // Ruta base
 app.get('/', (req, res) => {

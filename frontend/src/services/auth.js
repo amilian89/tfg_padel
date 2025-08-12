@@ -17,6 +17,14 @@ const getAuthHeaders = () => {
   };
 };
 
+// Función para obtener headers de autorización
+export const authHeader = () => {
+  const token = getAuthToken();
+  return {
+    Authorization: `Bearer ${token}`,
+  };
+};
+
 export function register(data) {
   return axios.post(`${API_URL}/auth/register`, data);
 }
