@@ -227,6 +227,22 @@
   color: white;
 }
 
+.link-button {
+  background: none;
+  border: none;
+  color: #cbd5e0;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+  padding: 0;
+  transition: color 0.3s ease;
+}
+
+.link-button:hover {
+  color: white;
+}
+
 .footer-bottom {
   border-top: 1px solid #4a5568;
   padding-top: 1rem;

@@ -162,17 +162,17 @@ const Home = () => {
             <div className="footer-section">
               <h4>Legal</h4>
               <ul className="footer-links">
-                <li><a href="#">Términos y condiciones</a></li>
-                <li><a href="#">Política de privacidad</a></li>
-                <li><a href="#">Cookies</a></li>
+                <li><button className="link-button">Términos y condiciones</button></li>
+                <li><button className="link-button">Política de privacidad</button></li>
+                <li><button className="link-button">Cookies</button></li>
               </ul>
             </div>
             <div className="footer-section">
               <h4>Contacto</h4>
               <ul className="footer-links">
                 <li><a href="mailto:info@propista.com">info@propista.com</a></li>
-                <li><a href="#">Soporte</a></li>
-                <li><a href="#">Sobre nosotros</a></li>
+                <li><button className="link-button">Soporte</button></li>
+                <li><button className="link-button">Sobre nosotros</button></li>
               </ul>
             </div>
           </div>

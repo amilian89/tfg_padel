@@ -10,7 +10,7 @@ const MisSolicitudes = () => {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState(null);
-  const [userData, setUserData] = useState(null);
+  // const [userData, setUserData] = useState(null); // Comentado porque no se usa
   
   // Estado de paginación
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,10 +34,10 @@ const MisSolicitudes = () => {
       return;
     }
 
-    setUserData({
-      role: userRole,
-      id: userId
-    });
+    // setUserData({
+    //   role: userRole,
+    //   id: userId
+    // }); // Comentado porque no se usa
 
     // Cargar primera página de solicitudes
     loadSolicitudes(1, true);

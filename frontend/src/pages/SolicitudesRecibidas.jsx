@@ -13,7 +13,7 @@ const SolicitudesRecibidas = () => {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState(null);
-  const [userData, setUserData] = useState(null);
+  // const [userData, setUserData] = useState(null); // Comentado porque no se usa
   const [procesandoSolicitudes, setProcesandoSolicitudes] = useState(new Set());
   
   // Estado de paginación
@@ -38,10 +38,10 @@ const SolicitudesRecibidas = () => {
       return;
     }
 
-    setUserData({
-      role: userRole,
-      id: userId
-    });
+    // setUserData({
+    //   role: userRole,
+    //   id: userId
+    // }); // Comentado porque no se usa
 
     // Cargar primera página de solicitudes
     loadSolicitudes(1, true);
@@ -117,7 +117,7 @@ const SolicitudesRecibidas = () => {
 
     solicitudes.forEach(solicitud => {
       const ofertaId = solicitud.oferta.id;
-      const ofertaTitulo = solicitud.oferta.titulo;
+      // const ofertaTitulo = solicitud.oferta.titulo; // Comentado porque no se usa
 
       if (!grupos.has(ofertaId)) {
         grupos.set(ofertaId, {
