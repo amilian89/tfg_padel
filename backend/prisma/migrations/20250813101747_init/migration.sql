@@ -80,36 +80,6 @@ CREATE TABLE "Solicitud" (
 );
 
 -- CreateTable
-CREATE TABLE "Contrato" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "solicitudId" INTEGER NOT NULL,
-    "ofertaId" INTEGER NOT NULL,
-    "demandanteId" INTEGER NOT NULL,
-    "clubId" INTEGER NOT NULL,
-    "fechaInicio" DATETIME NOT NULL,
-    "fechaFin" DATETIME NOT NULL,
-    "estado" TEXT NOT NULL,
-    "condiciones" TEXT NOT NULL,
-    "fechaCreacion" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT "Contrato_solicitudId_fkey" FOREIGN KEY ("solicitudId") REFERENCES "Solicitud" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "Contrato_ofertaId_fkey" FOREIGN KEY ("ofertaId") REFERENCES "Oferta" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "Contrato_demandanteId_fkey" FOREIGN KEY ("demandanteId") REFERENCES "Demandante" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "Contrato_clubId_fkey" FOREIGN KEY ("clubId") REFERENCES "Club" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
-);
-
--- CreateTable
-CREATE TABLE "Mensaje" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "emisorId" INTEGER NOT NULL,
-    "receptorId" INTEGER NOT NULL,
-    "contenido" TEXT NOT NULL,
-    "fechaEnvio" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "leido" BOOLEAN NOT NULL DEFAULT false,
-    CONSTRAINT "Mensaje_emisorId_fkey" FOREIGN KEY ("emisorId") REFERENCES "Usuario" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "Mensaje_receptorId_fkey" FOREIGN KEY ("receptorId") REFERENCES "Usuario" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
-);
-
--- CreateTable
 CREATE TABLE "Notificacion" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "usuarioId" INTEGER NOT NULL,
@@ -129,6 +99,3 @@ CREATE UNIQUE INDEX "Club_usuarioId_key" ON "Club"("usuarioId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Demandante_usuarioId_key" ON "Demandante"("usuarioId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Contrato_solicitudId_key" ON "Contrato"("solicitudId");

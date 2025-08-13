@@ -44,8 +44,6 @@ model Usuario {
   club            Club?
   demandante      Demandante?
   notificaciones  Notificacion[]
-  mensajesEnviados   Mensaje[] @relation("Emisor")
-  mensajesRecibidos  Mensaje[] @relation("Receptor")
 }
 
 model Club {
@@ -62,7 +60,6 @@ model Club {
   telefonoContacto String
   usuario         Usuario    @relation(fields: [usuarioId], references: [id])
   ofertas         Oferta[]
-  contratos       Contrato[]
 }
 
 model Demandante {
@@ -79,7 +76,6 @@ model Demandante {
   fotoPerfilUrl   String
   usuario         Usuario    @relation(fields: [usuarioId], references: [id])
   solicitudes     Solicitud[]
-  contratos       Contrato[]
 }
 
 model Oferta {
@@ -102,7 +98,6 @@ model Oferta {
   fechaCierre         DateTime?
   club                Club        @relation(fields: [clubId], references: [id])
   solicitudes         Solicitud[]
-  contratos           Contrato[]
 }
 
 model Solicitud {
@@ -117,35 +112,6 @@ model Solicitud {
   fechaFinalizacion DateTime?
   oferta            Oferta          @relation(fields: [ofertaId], references: [id])
   demandante        Demandante      @relation(fields: [demandanteId], references: [id])
-  contrato          Contrato?
-}
-
-model Contrato {
-  id              Int        @id @default(autoincrement())
-  solicitudId     Int        @unique
-  ofertaId        Int
-  demandanteId    Int
-  clubId          Int
-  fechaInicio     DateTime
-  fechaFin        DateTime
-  estado          String
-  condiciones     String
-  fechaCreacion   DateTime  @default(now())
-  solicitud       Solicitud @relation(fields: [solicitudId], references: [id])
-  oferta          Oferta    @relation(fields: [ofertaId], references: [id])
-  demandante      Demandante @relation(fields: [demandanteId], references: [id])
-  club            Club      @relation(fields: [clubId], references: [id])
-}
-
-model Mensaje {
-  id          Int      @id @default(autoincrement())
-  emisorId    Int
-  receptorId  Int
-  contenido   String
-  fechaEnvio  DateTime @default(now())
-  leido       Boolean  @default(false)
-  emisor      Usuario  @relation("Emisor", fields: [emisorId], references: [id])
-  receptor    Usuario  @relation("Receptor", fields: [receptorId], references: [id])
 }
 
 model Notificacion {
