@@ -124,7 +124,15 @@ const Notificaciones = () => {
     <div className="container">
       <div className="notificaciones-container">
         <div className="notificaciones-header">
-          <h1>Notificaciones</h1>
+          <div className="notificaciones-header-left">
+            <button 
+              className="btn btn-outline back-btn"
+              onClick={() => navigate('/panel')}
+            >
+              ← Volver al panel
+            </button>
+            <h1>Notificaciones</h1>
+          </div>
           {total > 0 && (
             <span className="notificaciones-count">
               {total} notificación{total !== 1 ? 'es' : ''}

@@ -144,4 +144,18 @@
   --color-header-bg: #ffffff;
   --color-header-text: #1a365d;
   --color-background-light: #f1f5f9;
-} 
+  --logo-filter: brightness(0) saturate(100%) invert(37%) sepia(83%) saturate(1234%) hue-rotate(207deg) brightness(97%) contrast(101%);
+}
+
+/* Variables del logo para cada tema */
+.theme-club {
+  --logo-filter: brightness(0) saturate(100%) invert(37%) sepia(83%) saturate(1234%) hue-rotate(207deg) brightness(97%) contrast(101%);
+}
+
+.theme-demandante {
+  --logo-filter: brightness(0) saturate(100%) invert(67%) sepia(89%) saturate(1234%) hue-rotate(207deg) brightness(97%) contrast(101%);
+}
+
+.theme-default {
+  --logo-filter: brightness(0) saturate(100%) invert(37%) sepia(83%) saturate(1234%) hue-rotate(207deg) brightness(97%) contrast(101%);
+}

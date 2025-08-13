@@ -30,8 +30,8 @@ const Header = () => {
     <header className="header">
       <div className="container">
         <div className="header-content">
-          <div className="logo" onClick={() => navigate("/")}>
-            <span className="logo-text">ProPista</span>
+          <div className="logo" onClick={() => navigate("/")} title="ProPista - Inicio">
+            <img src="/logo.png" alt="ProPista Logo" className="logo-image" />
           </div>
           <nav className="nav">
             {!isLogged ? (
