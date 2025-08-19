@@ -116,13 +116,6 @@ const OfertaDetalle = () => {
   };
 
   const handleEliminarOferta = async () => {
-    // Confirmación antes de eliminar
-    const confirmar = window.confirm(
-      "¿Estás seguro de que quieres eliminar esta oferta? Esta acción no se puede deshacer."
-    );
-
-    if (!confirmar) return;
-
     try {
       setEliminando(true);
       await deleteOferta(id);

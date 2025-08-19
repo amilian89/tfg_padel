@@ -80,13 +80,6 @@ const MisOfertas = () => {
   };
 
   const handleEliminarOferta = async (ofertaId) => {
-    // Confirmación antes de eliminar
-    const confirmar = window.confirm(
-      "¿Estás seguro de que quieres eliminar esta oferta? Esta acción no se puede deshacer."
-    );
-
-    if (!confirmar) return;
-
     // Guardar la oferta original antes de eliminarla (para poder restaurarla si hay error)
     const ofertaOriginal = ofertas.find(o => o.id === ofertaId);
 
