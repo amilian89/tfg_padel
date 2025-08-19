@@ -58,12 +58,20 @@ const Header = () => {
                   Panel
                 </button>
                 {userRole === "club" && (
-                  <button 
-                    className="btn btn-outline" 
-                    onClick={() => navigate("/solicitudes")}
-                  >
-                    Solicitudes
-                  </button>
+                  <>
+                    <button 
+                      className="btn btn-outline" 
+                      onClick={() => navigate("/mis-ofertas")}
+                    >
+                      Mis Ofertas
+                    </button>
+                    <button 
+                      className="btn btn-outline" 
+                      onClick={() => navigate("/solicitudes")}
+                    >
+                      Solicitudes
+                    </button>
+                  </>
                 )}
                 {userRole === "demandante" && (
                   <button 

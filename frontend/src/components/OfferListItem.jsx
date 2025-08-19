@@ -11,7 +11,10 @@ const OfferListItem = ({
   deporte, 
   salario, 
   fechaPublicacion, 
-  descripcion 
+  descripcion,
+  showDeleteButton = false,
+  onDelete,
+  isDeleting = false
 }) => {
   const navigate = useNavigate();
 
@@ -22,6 +25,13 @@ const OfferListItem = ({
 
   const handleItemClick = () => {
     navigate(`/oferta/${id}`);
+  };
+
+  const handleDelete = (e) => {
+    e.stopPropagation();
+    if (onDelete) {
+      onDelete(id);
+    }
   };
 
   const formatSalario = (salario) => {
@@ -88,6 +98,23 @@ const OfferListItem = ({
           >
             Ver más
           </button>
+          {showDeleteButton && (
+            <button 
+              className="btn btn-danger btn-small"
+              onClick={handleDelete}
+              disabled={isDeleting}
+              aria-label={`Eliminar oferta: ${titulo}`}
+            >
+              {isDeleting ? (
+                <>
+                  <div className="loading-spinner-small"></div>
+                  Eliminando...
+                </>
+              ) : (
+                'Eliminar'
+              )}
+            </button>
+          )}
         </div>
       </div>
     </div>

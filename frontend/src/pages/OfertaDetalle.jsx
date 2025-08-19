@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Header from "../components/Header";
 import Toast from "../components/Toast";
 import { useToast } from "../hooks/useToast";
+import { deleteOferta } from "../services/ofertas";
 import "./OfertaDetalle.css";
 
 const OfertaDetalle = () => {
@@ -18,29 +19,9 @@ const OfertaDetalle = () => {
   const [yaAplicado, setYaAplicado] = useState(false);
   const [mensajeSolicitud, setMensajeSolicitud] = useState("");
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
+  const [eliminando, setEliminando] = useState(false);
 
-  useEffect(() => {
-    // Verificar autenticación
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/login");
-      return;
-    }
-
-    // Obtener datos del usuario
-    const userRole = localStorage.getItem("rol");
-    const userId = localStorage.getItem("id");
-    
-    setUserData({
-      role: userRole,
-      id: userId
-    });
-
-    // Cargar oferta
-    loadOferta();
-  }, [id, navigate]);
-
-  const loadOferta = async () => {
+  const loadOferta = useCallback(async () => {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
@@ -61,7 +42,30 @@ const OfertaDetalle = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    // Verificar autenticación
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    // Obtener datos del usuario
+    const userRole = localStorage.getItem("rol");
+    const userId = localStorage.getItem("id");
+    const clubId = localStorage.getItem("clubId");
+    
+    setUserData({
+      role: userRole,
+      id: userId,
+      clubId: clubId
+    });
+
+    // Cargar oferta
+    loadOferta();
+  }, [id, navigate, loadOferta]);
 
   const handleAplicar = async () => {
     if (!mensajeSolicitud.trim()) {
@@ -110,6 +114,34 @@ const OfertaDetalle = () => {
       day: 'numeric'
     });
   };
+
+  const handleEliminarOferta = async () => {
+    // Confirmación antes de eliminar
+    const confirmar = window.confirm(
+      "¿Estás seguro de que quieres eliminar esta oferta? Esta acción no se puede deshacer."
+    );
+
+    if (!confirmar) return;
+
+    try {
+      setEliminando(true);
+      await deleteOferta(id);
+      
+      showSuccess("Oferta eliminada correctamente");
+      setTimeout(() => {
+        navigate("/mis-ofertas");
+      }, 1500);
+    } catch (err) {
+      console.error("Error al eliminar oferta:", err);
+      showError(err.message || "Error al eliminar la oferta. Por favor, intenta de nuevo.");
+    } finally {
+      setEliminando(false);
+    }
+  };
+
+  // Verificar si el usuario es el propietario de la oferta
+  const esPropietario = userData?.role === "club" && oferta?.clubId && 
+    userData.clubId === oferta.clubId.toString();
 
   if (loading) {
     return (
@@ -335,9 +367,26 @@ const OfertaDetalle = () => {
 
           {userData?.role === "club" && oferta.clubId && (
             <div className="club-acciones">
-              <p className="info-club">
-                Como club, puedes gestionar las solicitudes desde tu panel de control.
-              </p>
+              {esPropietario ? (
+                <div className="acciones-propietario">
+                  <p className="info-club">
+                    Esta es tu oferta. Puedes gestionar las solicitudes desde tu panel de control.
+                  </p>
+                  <button 
+                    className="btn btn-danger"
+                    onClick={handleEliminarOferta}
+                    disabled={eliminando}
+                  >
+                    {eliminando ? "Eliminando..." : "Eliminar oferta"}
+                  </button>
+                </div>
+              ) : (
+                <div className="acciones-no-propietario">
+                  <p className="info-club">
+                    Como club, puedes gestionar las solicitudes desde tu panel de control.
+                  </p>
+                </div>
+              )}
             </div>
           )}
         </div>

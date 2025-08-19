@@ -177,8 +177,148 @@ const crearOferta = async (req, res) => {
   }
 };
 
+// OBTENER MIS OFERTAS (solo para clubes)
+const getMisOfertas = async (req, res) => {
+  try {
+    // Obtener parámetros de paginación
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 10;
+    
+    // Validar parámetros
+    if (page < 1 || pageSize < 1 || pageSize > 50) {
+      return res.status(400).json({
+        error: 'Parámetros de paginación inválidos. page >= 1, pageSize entre 1 y 50'
+      });
+    }
+
+    // Obtener el usuario autenticado del token JWT
+    const usuarioId = req.usuario.id;
+
+    // Buscar el club del usuario autenticado
+    const club = await prisma.club.findUnique({
+      where: { usuarioId: usuarioId }
+    });
+
+    if (!club) {
+      return res.status(400).json({
+        error: 'El usuario no tiene un perfil de club'
+      });
+    }
+
+    // Calcular skip para la paginación
+    const skip = (page - 1) * pageSize;
+
+    // Obtener ofertas del club con paginación
+    const ofertas = await prisma.oferta.findMany({
+      where: {
+        clubId: club.id
+      },
+      include: {
+        club: {
+          select: {
+            nombreClub: true,
+            ciudad: true,
+            provincia: true
+          }
+        }
+      },
+      orderBy: {
+        fechaPublicacion: 'desc'
+      },
+      skip: skip,
+      take: pageSize
+    });
+
+    // Obtener el total de ofertas del club
+    const total = await prisma.oferta.count({
+      where: {
+        clubId: club.id
+      }
+    });
+
+    // Devolver respuesta con información de paginación
+    res.status(200).json({
+      items: ofertas,
+      page: page,
+      pageSize: pageSize,
+      total: total,
+      hasMore: skip + ofertas.length < total
+    });
+
+  } catch (error) {
+    console.error('Error al obtener mis ofertas:', error);
+    res.status(500).json({
+      error: 'Error interno del servidor'
+    });
+  }
+};
+
+// ELIMINAR OFERTA (solo para el club propietario)
+const deleteOferta = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const ofertaId = parseInt(id);
+
+    // Obtener el usuario autenticado del token JWT
+    const usuarioId = req.usuario.id;
+
+    // Buscar el club del usuario autenticado
+    const club = await prisma.club.findUnique({
+      where: { usuarioId: usuarioId }
+    });
+
+    if (!club) {
+      return res.status(400).json({
+        error: 'El usuario no tiene un perfil de club'
+      });
+    }
+
+    // Buscar la oferta y verificar que pertenece al club
+    const oferta = await prisma.oferta.findUnique({
+      where: { id: ofertaId }
+    });
+
+    if (!oferta) {
+      return res.status(404).json({
+        error: 'Oferta no encontrada'
+      });
+    }
+
+    // Verificar que la oferta pertenece al club autenticado
+    if (oferta.clubId !== club.id) {
+      return res.status(403).json({
+        error: 'No tienes permisos para eliminar esta oferta'
+      });
+    }
+
+    // Eliminar solicitudes relacionadas primero
+    await prisma.solicitud.deleteMany({
+      where: { ofertaId: ofertaId }
+    });
+
+    // Eliminar la oferta
+    await prisma.oferta.delete({
+      where: { id: ofertaId }
+    });
+
+    // Devolver respuesta exitosa
+    res.status(200).json({
+      ok: true,
+      message: 'Oferta eliminada correctamente'
+    });
+
+  } catch (error) {
+    console.error('Error al eliminar oferta:', error);
+    res.status(500).json({
+      error: 'Error interno del servidor'
+    });
+  }
+};
+
 module.exports = {
   getOfertas,
   getOfertaPorId,
-  crearOferta
+  crearOferta,
+  getMisOfertas,
+  deleteOferta
 }; 

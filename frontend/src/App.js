@@ -11,6 +11,7 @@ import OfertaDetalle from "./pages/OfertaDetalle";
 import PublicarOferta from "./pages/PublicarOferta";
 import SolicitudesRecibidas from "./pages/SolicitudesRecibidas";
 import MisSolicitudes from "./pages/MisSolicitudes";
+import MisOfertas from "./pages/MisOfertas";
 import Notificaciones from "./pages/Notificaciones";
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           <Route path="/publicar" element={<PublicarOferta />} />
           <Route path="/solicitudes" element={<SolicitudesRecibidas />} />
           <Route path="/mis-solicitudes" element={<MisSolicitudes />} />
+          <Route path="/mis-ofertas" element={<MisOfertas />} />
           <Route path="/notificaciones" element={<Notificaciones />} />
         </Routes>
       </Router>
